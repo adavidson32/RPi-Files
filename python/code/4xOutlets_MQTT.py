@@ -59,37 +59,37 @@ def disconnected(client):
 def message(client, feed_id, payload):
     # Message function will be called when a subscribed feed has a new value.
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
-    if payload=='Outet1-ON':
+    if payload == "Outet1-ON":
       GPIO.output(O1P, GPIO.LOW)
       print('Outlet-1 Turned ON')
-    elif payload=='Outlet1-OFF'
+    elif payload == "Outlet1-OFF":
       GPIO.outlet(O1P, GPIO.HIGH)
       print('Outlet-1 Turned OFF')
-    elif payload=='Outlet2-ON'
+    elif payload == "Outlet2-ON":
       GPIO.outlet(O2P, GPIO.LOW)
       print('Outlet-2 Turned ON')
-    elif payload=='Outlet2-OFF'
+    elif payload == "Outlet2-OFF":
       GPIO.outlet(O2P, GPIO.HIGH)
       print('Outlet-2 Turned OFF')
-    elif payload=='Outlet3-ON'
+    elif payload == "Outlet3-ON":
       GPIO.outlet(O3P, GPIO.LOW)
       print('Outlet-3 Turned ON')
-    elif payload=='Outlet3-OFF'
+    elif payload == "Outlet3-OFF":
       GPIO.outlet(O3P, GPIO.HIGH)
       print('Outlet-3 Turned OFF')
-    elif payload=='Outlet4-ON'
+    elif payload == "Outlet4-ON":
       GPIO.outlet(O4P, GPIO.LOW)
       print('Outlet-4 Turned ON')
-    elif payload=='Outlet4-OFF'
+    elif payload == "Outlet4-OFF":
       GPIO.outlet(O4P, GPIO.HIGH)
       print('Outlet-4 Turned OFF')
-    elif payload=='Outlet1234-ON'
+    elif payload == "Outlet1234-ON":
       GPIO.outlet(O1P, GPIO.LOW)
       GPIO.outlet(O2P, GPIO.LOW)
       GPIO.outlet(O3P, GPIO.LOW)
       GPIO.outlet(O4P, GPIO.LOW)
       print('All Outlets Turned ON')
-    elif payload=='Outlet1234-OFF'
+    elif payload == "Outlet1234-OFF":
       GPIO.outlet(O1P, GPIO.HIGH)
       GPIO.outlet(O2P, GPIO.HIGH)
       GPIO.outlet(O3P, GPIO.HIGH)
