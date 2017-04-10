@@ -4,7 +4,7 @@ import random
 import sys
 import time
 import RPi.GPIO as GPIO
-from Adafruit_IO import MQTTClient
+from Adafruit_IO import *
 
 #os.system('modprobe w1-gpio')
 #os.system('modprobe w1-therm')
@@ -118,7 +118,7 @@ client.loop_background()
 print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
 while True:
     RoomTemp = 50
-    print('Publishing {0} to IFTTT.'.format(RoomTemp))
+    print('Publishing {0} to RoomTemp.'.format(RoomTemp))
     client.publish('RoomTemp', RoomTemp)
     time.sleep(10)
 
