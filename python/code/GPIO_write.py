@@ -11,6 +11,7 @@ else:
   GPIO_function = input("Function to apply? : ")  
 
 GPIO.setup(GPIO_pin, GPIO.OUT)
+GPIO.setwarnings(False)
 
 if (GPIO_function == "HIGH"):
   GPIO.output(GPIO_pin, GPIO.HIGH)
