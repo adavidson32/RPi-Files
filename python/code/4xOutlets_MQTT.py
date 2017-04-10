@@ -48,17 +48,17 @@ def read_temp():
 def connected(client):
     # Connected function will be called when the client is connected to Adafruit IO.
     # This is a good place to subscribe to feed changes
-    print 'Connected to Adafruit IO!  Listening for DemoFeed changes...'
+    print('Connected to Adafruit IO!  Listening for DemoFeed changes...')
     client.subscribe('IFTTT')
 
 def disconnected(client):
     # Disconnected function will be called when the client disconnects.
-    print 'Disconnected from Adafruit IO!'
+    print('Disconnected from Adafruit IO!')
     sys.exit(1)
 
 def message(client, feed_id, payload):
     # Message function will be called when a subscribed feed has a new value.
-    print 'Feed {0} received new value: {1}'.format(feed_id, payload)
+    print('Feed {0} received new value: {1}'.format(feed_id, payload))
     if payload=='Outet1-ON':
       GPIO.output(O1P, GPIO.LOW)
       print('Outlet-1 Turned ON')
@@ -115,10 +115,10 @@ client.connect()
 # doing things in your program.
 client.loop_background()
 # Now send new values every 60 seconds.
-print 'Publishing a new message every 10 seconds (press Ctrl-C to quit)...'
+print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
 while True:
     RoomTemp = read_temp()
-    print 'Publishing {0} to IFTTT.'.format(RoomTemp)
+    print('Publishing {0} to IFTTT.'.format(RoomTemp))
     client.publish('IFTTT', RoomTemp)
     time.sleep(60)
 
