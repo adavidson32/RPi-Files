@@ -6,8 +6,8 @@ import time
 import RPi.GPIO as GPIO
 from Adafruit_IO import MQTTClient
 
-os.system('modprobe w1-gpio')
-os.system('modprobe w1-therm')
+#os.system('modprobe w1-gpio')
+#os.system('modprobe w1-therm')
 
 O1P = 5
 O2P = 6
@@ -23,27 +23,27 @@ GPIO.setup(O4P, GPIO.OUT, initial=GPIO.HIGH)
 ADAFRUIT_IO_KEY      = '11e4014862694ae6a474e89ece59c049'
 ADAFRUIT_IO_USERNAME = 'adavidson93'
 
-base_dir = '/sys/bus/w1/devices/'
-device_folder = glob.glob(base_dir + '28*')[0]
-device_file = device_folder + '/w1_slave'
+#base_dir = '/sys/bus/w1/devices/'
+#device_folder = glob.glob(base_dir + '28*')[0]
+#device_file = device_folder + '/w1_slave'
 
-def read_temp_raw():
-  f = open(device_file, 'r')
-  lines = f.readlines()
-  f.close()
-  return lines
+#def read_temp_raw():
+#  f = open(device_file, 'r')
+#  lines = f.readlines()
+#  f.close()
+#  return lines
 
-def read_temp():
-  lines = read_temp_raw()
-  while lines[0].strip()[-3:] != 'YES':
-    time.sleep(0.2)
-    lines = read_temp_raw()
-  equals_pos = lines[1].find('t=')
-  if equals_pos != -1:
-    temp_string = lines[1][equals_pos+2:]
-    temp_c = float(temp_string) / 1000.0
-    temp_f = temp_c * 9.0 / 5.0 + 32.0
-    return temp_c, temp_f
+#def read_temp():
+#  lines = read_temp_raw()
+#  while lines[0].strip()[-3:] != 'YES':
+#    time.sleep(0.2)
+#    lines = read_temp_raw()
+#  equals_pos = lines[1].find('t=')
+#  if equals_pos != -1:
+#    temp_string = lines[1][equals_pos+2:]
+#    temp_c = float(temp_string) / 1000.0
+#    temp_f = temp_c * 9.0 / 5.0 + 32.0
+#    return temp_c, temp_f
                                                    
 def connected(client):
     # Connected function will be called when the client is connected to Adafruit IO.
@@ -117,10 +117,10 @@ client.loop_background()
 # Now send new values every 60 seconds.
 print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
 while True:
-    RoomTemp = read_temp()
+    RoomTemp = 50
     print('Publishing {0} to IFTTT.'.format(RoomTemp))
-    client.publish('IFTTT', RoomTemp)
-    time.sleep(60)
+    client.publish('RoomTemp', RoomTemp)
+    time.sleep(10)
 
 # Another option is to pump the message loop yourself by periodically calling
 # the client loop function.  Notice how the loop below changes to call loop
