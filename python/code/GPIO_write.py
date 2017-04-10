@@ -10,8 +10,8 @@ else:
   GPIO_pin = int(input("Which pin to control? : "))
   GPIO_function = input("Function to apply? : ")  
 
-GPIO.setup(GPIO_pin, GPIO.OUT)
 GPIO.setwarnings(False)
+GPIO.setup(GPIO_pin, GPIO.OUT)
 
 if (GPIO_function == "HIGH"):
   GPIO.output(GPIO_pin, GPIO.HIGH)
