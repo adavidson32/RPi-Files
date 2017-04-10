@@ -1,0 +1,9 @@
+Individual Sensor Read(s):
+ - DS18B20 read:
+   - input read_freq, run_time
+   - maybe input which GPIO bus is connected to...
+ - BMP280 read:
+   - input read_freq, run_tim
+   - may need to add code to print i2c address output and have user choose which address device is on
+
+MQTT Scripts:
