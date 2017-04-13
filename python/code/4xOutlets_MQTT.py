@@ -51,7 +51,7 @@ def disconnected(client):
     sys.exit(1)
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
-    if payload == "Outet1-ON":
+    if payload == "Outlet1-ON":
       GPIO.output(O1P, GPIO.LOW)
       print('Outlet-1 Turned ON')
     elif payload == "Outlet1-OFF":
