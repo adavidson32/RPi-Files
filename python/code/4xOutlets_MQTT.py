@@ -1,5 +1,6 @@
 import os, glob, time, sys, lcddriver
 from Adafruit_IO import MQTTClient
+import RPi.GPIO as GPIO
 
 O1P, O2P, O3P, O4P = 5, 6, 13, 19
 LCD_BACKLIGHT = 0x08
