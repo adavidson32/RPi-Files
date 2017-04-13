@@ -1,18 +1,15 @@
-import os
-import glob
-import random
-import sys
-import time
-import RPi.GPIO as GPIO
-from Adafruit_IO import *
+import os, glob, time, sys, lcddriver
+from Adafruit_IO import MQTTClient
 
-#os.system('modprobe w1-gpio')
-#os.system('modprobe w1-therm')
-
-O1P = 5
-O2P = 6
-O3P = 13
-O4P = 19
+O1P, O2P, O3P, O4P = 5, 6, 13, 19
+LCD_BACKLIGHT = 0x08
+LCD_NOBACKLIGHT = 0x00
+ADAFRUIT_IO_KEY      = '11e4014862694ae6a474e89ece59c049'
+ADAFRUIT_IO_USERNAME = 'adavidson93'
+SUB_FEED = 'IFTTT'
+PUB_FEED = 'RoomTemp'
+sample_rate = 10.0
+room_temp = 10.0
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(O1P, GPIO.OUT, initial=GPIO.HIGH)
@@ -20,128 +17,105 @@ GPIO.setup(O2P, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(O3P, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(O4P, GPIO.OUT, initial=GPIO.HIGH)
 
-ADAFRUIT_IO_KEY      = '11e4014862694ae6a474e89ece59c049'
-ADAFRUIT_IO_USERNAME = 'adavidson93'
-
-#base_dir = '/sys/bus/w1/devices/'
-#device_folder = glob.glob(base_dir + '28*')[0]
-#device_file = device_folder + '/w1_slave'
-
-#def read_temp_raw():
-#  f = open(device_file, 'r')
-#  lines = f.readlines()
-#  f.close()
-#  return lines
-
-#def read_temp():
-#  lines = read_temp_raw()
-#  while lines[0].strip()[-3:] != 'YES':
-#    time.sleep(0.2)
-#    lines = read_temp_raw()
-#  equals_pos = lines[1].find('t=')
-#  if equals_pos != -1:
-#    temp_string = lines[1][equals_pos+2:]
-#    temp_c = float(temp_string) / 1000.0
-#    temp_f = temp_c * 9.0 / 5.0 + 32.0
-#    return temp_c, temp_f
-                                                   
+os.system('modprobe w1-gpio')
+os.system('modprobe w1-therm')
+device_folder = glob.glob('/sys/bus/w1/devices/28*')
+device_file = device_folder[0] + '/w1_slave'
+def read_temp_raw():
+    f_1 = open(device_file, 'r')
+    lines_1 = f_1.readlines()
+    f_1.close()
+    return lines_1
+def read_temp():
+    lines = read_temp_raw()
+    while lines[0].strip()[-3:] != 'YES':
+        time.sleep(0.2)
+        lines = read_temp_raw()
+    equals_pos = lines[1].find('t=')
+    temp = float(lines[1][equals_pos+2:])/1000
+    temp_f = (temp*1.8 + 32.0)
+    return temp_f
+def clear_lcd():
+    lcd.lcd_display_string("                ", 1)
+    lcd.lcd_display_string("                ", 2)
 def connected(client):
-    # Connected function will be called when the client is connected to Adafruit IO.
-    # This is a good place to subscribe to feed changes
-    print('Connected to Adafruit IO!  Listening for DemoFeed changes...')
-    client.subscribe('IFTTT')
-
+    print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEED))
+    clear_lcd()
+    lcd.lcd_display_string("Conn adafruit.io", 1)
+    lcd.lcd_display_string("usr: {}".format(ADAFRUIT_IO_USERNAME), 2)
+    client.subscribe(SUB_FEED)
 def disconnected(client):
-    # Disconnected function will be called when the client disconnects.
     print('Disconnected from Adafruit IO!')
+    clear_lcd()
     sys.exit(1)
-
 def message(client, feed_id, payload):
-    # Message function will be called when a subscribed feed has a new value.
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     if payload == "Outet1-ON":
       GPIO.output(O1P, GPIO.LOW)
       print('Outlet-1 Turned ON')
     elif payload == "Outlet1-OFF":
-      GPIO.outlet(O1P, GPIO.HIGH)
+      GPIO.output(O1P, GPIO.HIGH)
       print('Outlet-1 Turned OFF')
     elif payload == "Outlet2-ON":
-      GPIO.outlet(O2P, GPIO.LOW)
+      GPIO.output(O2P, GPIO.LOW)
       print('Outlet-2 Turned ON')
     elif payload == "Outlet2-OFF":
-      GPIO.outlet(O2P, GPIO.HIGH)
+      GPIO.output(O2P, GPIO.HIGH)
       print('Outlet-2 Turned OFF')
     elif payload == "Outlet3-ON":
-      GPIO.outlet(O3P, GPIO.LOW)
+      GPIO.output(O3P, GPIO.LOW)
       print('Outlet-3 Turned ON')
     elif payload == "Outlet3-OFF":
-      GPIO.outlet(O3P, GPIO.HIGH)
+      GPIO.output(O3P, GPIO.HIGH)
       print('Outlet-3 Turned OFF')
     elif payload == "Outlet4-ON":
-      GPIO.outlet(O4P, GPIO.LOW)
+      GPIO.output(O4P, GPIO.LOW)
       print('Outlet-4 Turned ON')
     elif payload == "Outlet4-OFF":
-      GPIO.outlet(O4P, GPIO.HIGH)
+      GPIO.output(O4P, GPIO.HIGH)
       print('Outlet-4 Turned OFF')
     elif payload == "Outlet1234-ON":
-      GPIO.outlet(O1P, GPIO.LOW)
-      GPIO.outlet(O2P, GPIO.LOW)
-      GPIO.outlet(O3P, GPIO.LOW)
-      GPIO.outlet(O4P, GPIO.LOW)
+      GPIO.output(O1P, GPIO.LOW)
+      GPIO.output(O2P, GPIO.LOW)
+      GPIO.output(O3P, GPIO.LOW)
+      GPIO.output(O4P, GPIO.LOW)
       print('All Outlets Turned ON')
     elif payload == "Outlet1234-OFF":
-      GPIO.outlet(O1P, GPIO.HIGH)
-      GPIO.outlet(O2P, GPIO.HIGH)
-      GPIO.outlet(O3P, GPIO.HIGH)
-      GPIO.outlet(O4P, GPIO.HIGH)
+      GPIO.output(O1P, GPIO.HIGH)
+      GPIO.output(O2P, GPIO.HIGH)
+      GPIO.output(O3P, GPIO.HIGH)
+      GPIO.output(O4P, GPIO.HIGH)
       print('All Outlets Turned OFF')
+    elif payload == "Backlight-OFF":
+      lcd.lcd_device.write_cmd(data | LCD_NOBACKLIGHT)
+    elif payload == "Backlight-ON":
+      lcd.lcd_device.write_cmd(data | LCD_BACKLIGHT)
+    if len(payload) > 14:
+        payload = payload[0:14]
+    clear_lcd()
+    len_feed_name = len(feed_id)
+    extra_needed = (16 - len_feed_name - 3)
+    spacer = ''
+    for i in range(0,extra_needed):
+        spacer += ' '
+    lcd.lcd_display_string("F:{0} {1}{2:.1f}".format(feed_id, spacer, coffee_temp), 1)
+    lcd.lcd_display_string("M:{}".format(payload), 2)
 
-# Create an MQTT client instance.
+lcd = lcddriver.lcd()
+clear_lcd()
+
 client = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
-
-# Setup the callback functions defined above.
 client.on_connect    = connected
 client.on_disconnect = disconnected
 client.on_message    = message
-
-# Connect to the Adafruit IO server.
 client.connect()
 
-# Now the program needs to use a client loop function to ensure messages are
-# sent and received.  There are a few options for driving the message loop,
-# depending on what your program needs to do.  
-
-# The first option is to run a thread in the background so you can continue
-# doing things in your program.
-client.loop_background()
-# Now send new values every 60 seconds.
-print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
+last = 0
+print('Publishing a new message every 30 seconds (press Ctrl-C to quit)...')
 while True:
-    RoomTemp = 50
-    print('Publishing {0} to RoomTemp.'.format(RoomTemp))
-    client.publish('RoomTemp', RoomTemp)
-    time.sleep(10)
-
-# Another option is to pump the message loop yourself by periodically calling
-# the client loop function.  Notice how the loop below changes to call loop
-# continuously while still sending a new message every 10 seconds.  This is a
-# good option if you don't want to or can't have a thread pumping the message
-# loop in the background.
-#last = 0
-#print 'Publishing a new message every 10 seconds (press Ctrl-C to quit)...'
-#while True:
-#   # Explicitly pump the message loop.
-#   client.loop()
-#   # Send a new message every 10 seconds.
-#   if (time.time() - last) >= 10.0:
-#       value = random.randint(0, 100)
-#       print 'Publishing {0} to DemoFeed.'.format(value)
-#       client.publish('DemoFeed', value)
-#       last = time.time()
-
-# The last option is to just call loop_blocking.  This will run a message loop
-# forever, so your program will not get past the loop_blocking call.  This is
-# good for simple programs which only listen to events.  For more complex programs
-# you probably need to have a background thread loop or explicit message loop like
-# the two previous examples above.
-#client.loop_blocking()
+   client.loop()
+   if (time.time() - last) >= sample_rate:
+       coffee_temp = read_temp()
+       print('Publishing {0:.2f} to cofee_temp feed.'.format(coffee_temp))
+       client.publish(PUB_FEED, coffee_temp)
+       last = time.time()
