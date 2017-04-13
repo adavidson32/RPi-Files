@@ -88,9 +88,9 @@ def message(client, feed_id, payload):
       GPIO.output(O4P, GPIO.HIGH)
       print('All Outlets Turned OFF')
     elif payload == "Backlight-OFF":
-      lcd.lcd_device.write_cmd(data | LCD_NOBACKLIGHT)
+      lcd.lcd_device.write_cmd(LCD_NOBACKLIGHT)
     elif payload == "Backlight-ON":
-      lcd.lcd_device.write_cmd(data | LCD_BACKLIGHT)
+      lcd.lcd_device.write_cmd(LCD_BACKLIGHT)
     if len(payload) > 14:
         payload = payload[0:14]
     clear_lcd()
