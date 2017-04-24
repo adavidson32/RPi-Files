@@ -1,20 +1,22 @@
 import os, glob, time, sys, lcddriver
 from Adafruit_IO import MQTTClient
-import RPi.GPIO as GPIO
+import RPi.GPIO as io
 
-O1P, O2P, O3P, O4P = 19, 13, 6, 5
-ADAFRUIT_IO_KEY      = '11e4014862694ae6a474e89ece59c049'
-ADAFRUIT_IO_USERNAME = 'adavidson93'
+Outlets = {'O1': {'pin': 19, 'last': 0, 'new': -1}, 
+           'O2': {'pin': 13, 'last': 0, 'new': -1}, 
+           'O3': {'pin': 6, 'last': 0, 'new': -1}, 
+           'O4': {'pin': 5, 'last': 0, 'new': -1}}
+ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
 SUB_FEED = 'IFTTT'
 PUB_FEED = 'RoomTemp'
-sample_rate = 10.0
-room_temp = 10.0
+sample_rate = 10.0 #How often to send temperature value
+room_temp = 10.0 #Initial value (could be anything....)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(O1P, GPIO.OUT, initial=GPIO.HIGH)
-GPIO.setup(O2P, GPIO.OUT, initial=GPIO.HIGH)
-GPIO.setup(O3P, GPIO.OUT, initial=GPIO.HIGH)
-GPIO.setup(O4P, GPIO.OUT, initial=GPIO.HIGH)
+io.setmode(io.BCM)
+io.setup(Outlets['O1']['pin'], io.OUT, initial=io.HIGH)
+io.setup(Outlets['O2']['pin'], io.OUT, initial=io.HIGH)
+io.setup(Outlets['O3']['pin'], io.OUT, initial=io.HIGH)
+io.setup(Outlets['O4']['pin'], io.OUT, initial=io.HIGH)
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -34,6 +36,7 @@ def read_temp():
     temp = float(lines[1][equals_pos+2:])/1000
     temp_f = (temp*1.8 + 32.0)
     return temp_f
+
 def connected(client):
     print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEED))
     client.subscribe(SUB_FEED)
@@ -43,42 +46,45 @@ def disconnected(client):
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     if payload == "Outlet1-ON":
-      GPIO.output(O1P, GPIO.LOW)
-      print('Outlet-1 Turned ON')
+        Outlets['O1']['new'] = 1
     elif payload == "Outlet1-OFF":
-      GPIO.output(O1P, GPIO.HIGH)
-      print('Outlet-1 Turned OFF')
+        Outlets['O1']['new'] = 0
+    elif payload == "Outlet1":
+        Outlets['01']['new'] = not(Outlets['01']['last'])
     elif payload == "Outlet2-ON":
-      GPIO.output(O2P, GPIO.LOW)
-      print('Outlet-2 Turned ON')
+        Outlets['O2']['new'] = 1
     elif payload == "Outlet2-OFF":
-      GPIO.output(O2P, GPIO.HIGH)
-      print('Outlet-2 Turned OFF')
+        Outlets['O2']['new'] = 0
+    elif payload == "Outlet2":
+        Outlets['02']['new'] = not(Outlets['02']['last'])
     elif payload == "Outlet3-ON":
-      GPIO.output(O3P, GPIO.LOW)
-      print('Outlet-3 Turned ON')
+        Outlets['O3']['new'] = 1
     elif payload == "Outlet3-OFF":
-      GPIO.output(O3P, GPIO.HIGH)
-      print('Outlet-3 Turned OFF')
+        Outlets['O3']['new'] = 0
+    elif payload == "Outlet3":
+        Outlets['03']['new'] = not(Outlets['03']['last'])
     elif payload == "Outlet4-ON":
-      GPIO.output(O4P, GPIO.LOW)
-      print('Outlet-4 Turned ON')
+        Outlets['O4']['new'] = 1
     elif payload == "Outlet4-OFF":
-      GPIO.output(O4P, GPIO.HIGH)
-      print('Outlet-4 Turned OFF')
+        Outlets['O4']['new'] = 0
+    elif payload == "Outlet4":
+        Outlets['04']['new'] = not(Outlets['04']['last'])
     elif payload == "Outlet1234-ON":
-      GPIO.output(O1P, GPIO.LOW)
-      GPIO.output(O2P, GPIO.LOW)
-      GPIO.output(O3P, GPIO.LOW)
-      GPIO.output(O4P, GPIO.LOW)
-      print('All Outlets Turned ON')
+        for i in Outlets:
+            Outlets[i]['new'] = 1
     elif payload == "Outlet1234-OFF":
-      GPIO.output(O1P, GPIO.HIGH)
-      GPIO.output(O2P, GPIO.HIGH)
-      GPIO.output(O3P, GPIO.HIGH)
-      GPIO.output(O4P, GPIO.HIGH)
-      print('All Outlets Turned OFF')
-
+        for i in Outlets:
+            Outlets[i]['new'] = 0
+    elif payload == "Outlet1234":
+        for i in Outlets:  
+            Outlets[i]['new'] = not(Outlets[i]['last'])
+    for x in Outlets:
+        if not((Outlets[x]['new'] == Outlets[x]['last']):
+               io.output(Outlets[x]['pin'], Outlets[x]['new'])
+        Outlets[x]['last'] = Outlets[x]['new']
+        Outlets[x]['new'] = -1
+    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets[1]['last'], Outlets[2]['last'], Outlets[3]['last'], Outlets[4]['last']))
+    
 client = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 client.on_connect    = connected
 client.on_disconnect = disconnected
@@ -86,7 +92,7 @@ client.on_message    = message
 client.connect()
 
 last = 0
-print('Publishing a new message every 30 seconds (press Ctrl-C to quit)...')
+print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
 while True:
    client.loop()
    if (time.time() - last) >= sample_rate:
