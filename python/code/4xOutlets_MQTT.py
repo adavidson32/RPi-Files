@@ -85,9 +85,9 @@ def message(client, feed_id, payload):
             Outlets[i]['new'] = not(Outlets[i]['last'])
     for x in Outlets:
         if not(Outlets[x]['new'] == Outlets[x]['last']):
-               io.output(Outlets[x]['pin'], Outlets[x]['new'])
-        Outlets[x]['last'] = Outlets[x]['new']
-        Outlets[x]['new'] = -1
+            io.output(Outlets[x]['pin'], Outlets[x]['new'])
+            Outlets[x]['last'] = Outlets[x]['new']
+            Outlets[x]['new'] = -1
     print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets['O1']['last'], Outlets['O2']['last'], Outlets['O3']['last'], Outlets['O4']['last']))
     
 client = MQTTClient(ADAFRUIT_IO['USERNAME'], ADAFRUIT_IO['KEY'])
