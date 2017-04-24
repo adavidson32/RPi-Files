@@ -79,7 +79,7 @@ def message(client, feed_id, payload):
         for i in Outlets:  
             Outlets[i]['new'] = not(Outlets[i]['last'])
     for x in Outlets:
-        if not((Outlets[x]['new'] == Outlets[x]['last']):
+        if not(Outlets[x]['new'] == Outlets[x]['last']):
                io.output(Outlets[x]['pin'], Outlets[x]['new'])
         Outlets[x]['last'] = Outlets[x]['new']
         Outlets[x]['new'] = -1
