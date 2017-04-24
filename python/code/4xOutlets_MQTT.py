@@ -2,7 +2,7 @@ import os, glob, time, sys, lcddriver
 from Adafruit_IO import MQTTClient
 import RPi.GPIO as GPIO
 
-O1P, O2P, O3P, O4P = 5, 6, 13, 19
+O1P, O2P, O3P, O4P = 19, 13, 6, 5
 ADAFRUIT_IO_KEY      = '11e4014862694ae6a474e89ece59c049'
 ADAFRUIT_IO_USERNAME = 'adavidson93'
 SUB_FEED = 'IFTTT'
