@@ -6,9 +6,9 @@ import RPi.GPIO as io
 # last = currently set, new = new value to set
 # ex. Outlet-1 has pin 19, and is currently off
 Outlets = {'O1': {'pin': 19, 'last': 0, 'new': -1}, 
-           'O2': {'pin': 13, 'last': 0, 'new': -1}, 
+           'O2': {'pin': 5, 'last': 0, 'new': -1}, 
            'O3': {'pin': 6, 'last': 0, 'new': -1}, 
-           'O4': {'pin': 5, 'last': 0, 'new': -1}}
+           'O4': {'pin': 13, 'last': 0, 'new': -1}}
 
 # ADAFRUIT_IO dict with keys KEY and USERNAME
 ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
