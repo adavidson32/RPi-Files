@@ -85,7 +85,7 @@ def message(client, feed_id, payload):
         Outlets[x]['new'] = -1
     print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets[1]['last'], Outlets[2]['last'], Outlets[3]['last'], Outlets[4]['last']))
     
-client = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
+client = MQTTClient(ADAFRUIT_IO['USERNAME'], ADAFRUIT_IO['KEY'])
 client.on_connect    = connected
 client.on_disconnect = disconnected
 client.on_message    = message
