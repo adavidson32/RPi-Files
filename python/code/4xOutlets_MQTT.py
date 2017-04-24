@@ -83,7 +83,7 @@ def message(client, feed_id, payload):
                io.output(Outlets[x]['pin'], Outlets[x]['new'])
         Outlets[x]['last'] = Outlets[x]['new']
         Outlets[x]['new'] = -1
-    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets[1]['last'], Outlets[2]['last'], Outlets[3]['last'], Outlets[4]['last']))
+    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets['O1']['last'], Outlets['O2']['last'], Outlets['O3']['last'], Outlets['O4']['last']))
     
 client = MQTTClient(ADAFRUIT_IO['USERNAME'], ADAFRUIT_IO['KEY'])
 client.on_connect    = connected
