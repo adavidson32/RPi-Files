@@ -2,10 +2,15 @@ import os, glob, time, sys, lcddriver
 from Adafruit_IO import MQTTClient
 import RPi.GPIO as io
 
+# Outlets contains dictionairies for each Outlet.
+# last = currently set, new = new value to set
+# ex. Outlet-1 has pin 19, and is currently off
 Outlets = {'O1': {'pin': 19, 'last': 0, 'new': -1}, 
            'O2': {'pin': 13, 'last': 0, 'new': -1}, 
            'O3': {'pin': 6, 'last': 0, 'new': -1}, 
            'O4': {'pin': 5, 'last': 0, 'new': -1}}
+
+# ADAFRUIT_IO dict with keys KEY and USERNAME
 ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
 SUB_FEED = 'IFTTT'
 PUB_FEED = 'RoomTemp'
@@ -50,25 +55,25 @@ def message(client, feed_id, payload):
     elif payload == "Outlet1-OFF":
         Outlets['O1']['new'] = 0
     elif payload == "Outlet1":
-        Outlets['01']['new'] = not(Outlets['01']['last'])
+        Outlets['O1']['new'] = not(Outlets['O1']['last'])
     elif payload == "Outlet2-ON":
         Outlets['O2']['new'] = 1
     elif payload == "Outlet2-OFF":
         Outlets['O2']['new'] = 0
     elif payload == "Outlet2":
-        Outlets['02']['new'] = not(Outlets['02']['last'])
+        Outlets['O2']['new'] = not(Outlets['O2']['last'])
     elif payload == "Outlet3-ON":
         Outlets['O3']['new'] = 1
     elif payload == "Outlet3-OFF":
         Outlets['O3']['new'] = 0
     elif payload == "Outlet3":
-        Outlets['03']['new'] = not(Outlets['03']['last'])
+        Outlets['O3']['new'] = not(Outlets['O3']['last'])
     elif payload == "Outlet4-ON":
         Outlets['O4']['new'] = 1
     elif payload == "Outlet4-OFF":
         Outlets['O4']['new'] = 0
     elif payload == "Outlet4":
-        Outlets['04']['new'] = not(Outlets['04']['last'])
+        Outlets['O4']['new'] = not(Outlets['O4']['last'])
     elif payload == "Outlet1234-ON":
         for i in Outlets:
             Outlets[i]['new'] = 1
