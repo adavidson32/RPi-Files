@@ -20,3 +20,8 @@ class relays:
 	    io.output(self.pin, io.HIGH)
 
 
+    def off(self):
+	if self.active_low:
+	    io.output(self.pin, io.HIGH)
+	else:
+	    io.output(self.pin, io.LOW)
