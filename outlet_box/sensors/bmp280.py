@@ -5,7 +5,6 @@ i2c = I2C()
 # BMP280 default address.
 BMP280_I2CADDR = 0x76
 BMP280_CHIPID = 0xD0
-
 # BMP280 Registers
 BMP280_DIG_T1 = 0x88  # R   Unsigned Calibration data (16 bits)
 BMP280_DIG_T2 = 0x8A  # R   Signed Calibration data (16 bits)
@@ -19,13 +18,13 @@ BMP280_DIG_P6 = 0x98  # R   Signed Calibration data (16 bits)
 BMP280_DIG_P7 = 0x9A  # R   Signed Calibration data (16 bits)
 BMP280_DIG_P8 = 0x9C  # R   Signed Calibration data (16 bits)
 BMP280_DIG_P9 = 0x9E  # R   Signed Calibration data (16 bits)
-
 BMP280_CONTROL = 0xF4
 BMP280_RESET = 0xE0
 BMP280_CONFIG = 0xF5
 BMP280_PRESSUREDATA = 0xF7
 BMP280_TEMPDATA = 0xFA
 
+#----------------------------------------------------------------------
 units_std = {'temp': 'f', 'pressure': 'atm', 'altitude': 'feet'}
 units_met = {'temp': 'c', 'pressure': 'Pa', 'altitude': 'meters'}
 # temp units = 'f' or 'c', pressure units = 'Pa' or 'atm', altitude units = 'meters' or 'feet'
@@ -36,6 +35,8 @@ dec_places_met = {'temp': 2, 'pressure': 1, 'altitude': 1}
 #   from bmp280 import BMP280
 #   bmp = BMP280(units, dec_places) <-- units and dec_places example shown above....
 #   temp = bmp.
+
+#----------------------------------------------------------------------
 
 class BMP280(object):
     def __init__(self, address=BMP280_I2CADDR, i2c=None, **kwargs, units=units_std, dec_places=dec_places_std):
@@ -55,6 +56,8 @@ class BMP280(object):
         self.dp_pressure = dec_places['pressure']
         self.dp_altitude = dec_places['altitude']
 
+#----------------------------------------------------------------------
+        
     def _load_calibration(self):
         self.cal_t1 = int(self._device.readU16(BMP280_DIG_T1))  # UINT16
         self.cal_t2 = int(self._device.readS16(BMP280_DIG_T2))  # INT16
@@ -105,7 +108,7 @@ class BMP280(object):
         raw >>= 4
         self._logger.debug('Raw value 0x{0:X} ({1})'.format(raw & 0xFFFF, raw))
         return raw
-
+    
     def _compensate_temp(self, raw_temp):
         """ Compensate temperature """
         t1 = (((raw_temp >> 3) - (self.cal_t1 << 1)) *
@@ -123,7 +126,9 @@ class BMP280(object):
         compensated_temp = self._compensate_temp(raw_temp)
         temp = float(((compensated_temp * 5 + 128) >> 8)) / 100
         self._logger.debug('Calibrated temperature {0}'.format(temp))
-        return temp
+        if self.units_temp = 'f':
+            temp = ((temp * 1.8) + 32.0)
+        return round(temp, self.dp_temp)
 
 #----------------------------------------------------------------------      
       
@@ -131,23 +136,22 @@ class BMP280(object):
         """Gets the compensated pressure in Pascals."""
         raw_temp = self.read_raw(BMP280_PRESSUREDATA)
         compensated_temp = self._compensate_temp(raw_temp)
-
         p1 = compensated_temp - 128000
         p2 = p1 * p1 * self.cal_p6
         p2 += (p1 * self.cal_p6) << 17
         p2 += self.cal_p4 << 35
         p1 = ((p1 * p1 * self.cal_p3) >> 8) + ((p1 * self.cal_p2) << 12)
         p1 = ((1 << 47) + p1) * (self.cal_p1) >> 33
-
         if 0 == p1:
             return 0
-
         p = 1048576 - raw_temp
         p = (((p << 31) - p2) * 3125) / p1
         p1 = (self.cal_p9 * (p >> 13) * (p >> 13)) >> 25
         p2 = (self.cal_p8 * p) >> 19
         p = ((p + p1 + p2) >> 8) + ((self.cal_p7) << 4)
-
+        p_ret = float(p / 256)
+        if units_pressure = 'atm':
+            p_ret = p_ret * 0.00000
         return float(p / 256)
 
 #----------------------------------------------------------------------
