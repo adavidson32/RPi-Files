@@ -3,7 +3,7 @@ from single_relay import relay
 # To use four_relays.py:
 # from four_relays import four_relays
 # ex. relays = four_relays(4, 5, 6, 9, ('bed light', 'futon light', 'desk light', 'iPhone charger')
-#   
+# ex. relays.all_on(), relays.off_2(), relays.on('bed light"), etc...
 
 
 class four_relays:
@@ -53,22 +53,24 @@ class four_relays:
   def off_4(self):
     self.out4.off()
     
-  def on(name):
-    if name == self.out1_name:
-      self.out1.on()
-    elif name == self.out2_name:
-      self.out2.on()
-    elif name == self.out3_name:
-      self.out3.on()
-    elif name == self.out4_name:
-      self.out4.on()
+  def on(names):
+    for name in names:
+      if name == self.out1_name:
+        self.out1.on()
+      elif name == self.out2_name:
+        self.out2.on()
+      elif name == self.out3_name:
+        self.out3.on()
+      elif name == self.out4_name:
+        self.out4.on()
       
-  def off(name):
-    if name == self.out1_name:
-      self.out1.off()
-    elif name == self.out2_name:
-      self.out2.off()
-    elif name == self.out3_name:
-      self.out3.off()
-    elif name == self.out4_name:
-      self.out4.off()
+  def off(names):
+    for name in names:
+      if name == self.out1_name:
+        self.out1.off()
+      elif name == self.out2_name:
+        self.out2.off()
+      elif name == self.out3_name:
+        self.out3.off()
+      elif name == self.out4_name:
+        self.out4.off()
