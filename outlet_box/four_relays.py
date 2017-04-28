@@ -1,10 +1,9 @@
-from single_relay import relay
-
 # To use four_relays.py:
 # from four_relays import four_relays
 # ex. relays = four_relays(4, 5, 6, 9, ('bed light', 'futon light', 'desk light', 'iPhone charger')
-# ex. relays.all_on(), relays.off_2(), relays.on('bed light"), etc...
+# ex. relays.all_on(), relays.off_2(), relays.on(('bed light",)), relays.off(('bed light', 'futon light')), etc....
 
+from single_relay import relay
 
 class four_relays:
   def __init__(self, O1P, O2P, O3P, O4P, names):
