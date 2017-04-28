@@ -1,14 +1,22 @@
-import os, glob, time, sys, lcddriver
+import time, sys
 from Adafruit_IO import MQTTClient
-import RPi.GPIO as io
+from four_relays import four_relays
+from ds18b20 import DS18B20
+from bmp280 import BMP280
 
 # Outlets contains dictionairies for each Outlet.
 # last = currently set, new = new value to set
 # ex. Outlet-1 has pin 19, and is currently off
-Outlets = {'O1': {'pin': 19, 'last': 0, 'new': -1}, 
-           'O2': {'pin': 5, 'last': 0, 'new': -1}, 
-           'O3': {'pin': 6, 'last': 0, 'new': -1}, 
-           'O4': {'pin': 13, 'last': 0, 'new': -1}}
+Outlets = {'O1': {'pin': 19, 'name': 'futon lights', 'last': 0, 'new': -1}, 
+           'O2': {'pin': 5, 'name': 'iPhone charger', 'last': 0, 'new': -1}, 
+           'O3': {'pin': 6, 'name': 'bed light', 'last': 0, 'new': -1}, 
+           'O4': {'pin': 13, 'name': 'desk light', 'last': 0, 'new': -1}}
+
+ds = DS18B20()
+bmp = BMP280()
+outlet_pins = (Outlets['O1']['pin'], Outlets['O2']['pin'], Outlets['O3']['pin'], Outlets['O4']['pin'])
+outlet_names = (Outlets['O1']['name'], Outlets['O2']['name'], Outlets['O3']['name'], Outlets['O4']['name'])
+relays = four_relays(outlet_pins, outlet_names)
 
 # ADAFRUIT_IO dict with keys KEY and USERNAME
 ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
@@ -16,31 +24,6 @@ SUB_FEED = 'IFTTT'
 PUB_FEED = 'RoomTemp'
 sample_rate = 10.0 #How often to send temperature value
 room_temp = 10.0 #Initial value (could be anything....)
-
-io.setmode(io.BCM)
-io.setup(Outlets['O1']['pin'], io.OUT, initial=io.HIGH)
-io.setup(Outlets['O2']['pin'], io.OUT, initial=io.HIGH)
-io.setup(Outlets['O3']['pin'], io.OUT, initial=io.HIGH)
-io.setup(Outlets['O4']['pin'], io.OUT, initial=io.HIGH)
-
-os.system('modprobe w1-gpio')
-os.system('modprobe w1-therm')
-device_folder = glob.glob('/sys/bus/w1/devices/28*')
-device_file = device_folder[0] + '/w1_slave'
-def read_temp_raw():
-    f_1 = open(device_file, 'r')
-    lines_1 = f_1.readlines()
-    f_1.close()
-    return lines_1
-def read_temp():
-    lines = read_temp_raw()
-    while lines[0].strip()[-3:] != 'YES':
-        time.sleep(0.2)
-        lines = read_temp_raw()
-    equals_pos = lines[1].find('t=')
-    temp = float(lines[1][equals_pos+2:])/1000
-    temp_f = (temp*1.8 + 32.0)
-    return temp_f
 
 def connected(client):
     print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEED))
@@ -102,6 +85,7 @@ client.connect()
 last = 0
 print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
 while True:
+   sensor_values = (ds.temp('f'), bmp.pressure('pa'), bmp.altitude('ft'), bh.light('lux'), pir.motion(t_last_motion))
    client.loop()
    if (time.time() - last) >= sample_rate:
        coffee_temp = read_temp()
