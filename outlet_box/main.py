@@ -21,7 +21,7 @@ relays = four_relays(outlet_pins, outlet_names)
 # ADAFRUIT_IO dict with keys KEY and USERNAME
 ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
 SUB_FEED = 'IFTTT'
-PUB_FEED = 'RoomTemp'
+PUB_FEEDS = ('RoomTemp', 'AirPressure', 'AmbientLight', 'Motion')
 sample_rate = 10.0 #How often to send temperature value
 room_temp = 10.0 #Initial value (could be anything....)
 
