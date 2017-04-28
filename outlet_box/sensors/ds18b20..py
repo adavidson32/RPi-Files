@@ -1,5 +1,6 @@
 # Usage:
-#   ds = DS18B20('f')  <-- initialize ds18b20 1-wire bus to name 'ds' using fahrenheit units (
+#   ds = DS18B20('f', 3)  <-- initialize ds18b20 1-wire bus to name 'ds' using fahrenheit with 3 decimal places
+#   ds = DS18B20() <-- initialize ds18b20 with default values (units='c', decimal_places=2)
 #   temp_1 = ds.temp(0)  <-- return temp value for sensor #0 (float)
 #   all_temps = ds.temps()  <-- return all temp values on 1-wire bus (tuple of floats)
 #   num_devices = ds.device_count()  <-- returns number of ds18b20 sensors detected (int)
