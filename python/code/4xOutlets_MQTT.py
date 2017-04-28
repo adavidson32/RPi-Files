@@ -106,5 +106,5 @@ while True:
    if (time.time() - last) >= sample_rate:
        coffee_temp = read_temp()
        print('Publishing {0:.2f}F to RoomTemp feed.'.format(coffee_temp))
-       client.publish(PUB_FEED, roundD(coffee_temp, 2))
+       client.publish(PUB_FEED, round(coffee_temp, 2))
        last = time.time()
