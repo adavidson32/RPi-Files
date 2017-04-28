@@ -29,28 +29,28 @@ class four_relays:
     self.out3.off()
     self.out4.off()
     
-  def 1_on(self):
+  def on_1(self):
     self.out1.on()
     
-  def 1_off(self):
+  def off_1(self):
     self.out1.off()
   
-  def 2_on(self):
+  def on_2(self):
     self.out2.on()
   
-  def 2_off(self):
+  def off_2(self):
     self.out2.off()
   
-  def 3_on(self):
+  def on_3(self):
     self.out3.on()
   
-  def 3_off(self):
+  def off_3(self):
     self.out3.off()
   
-  def 4_on(self):
+  def on_4(self):
     self.out4.on()
   
-  def 4_off(self):
+  def off_4(self):
     self.out4.off()
     
   def on(name):
