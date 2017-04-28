@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
 import sys
 from argparse import ArgumentParser
 from xml.dom import minidom
@@ -37,5 +40,4 @@ def main():
 		print(indent + wind_condition)
 		print(indent + humidity)
 
-if __name__ == "__main__":
-	main()
+main()
