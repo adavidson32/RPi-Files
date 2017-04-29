@@ -16,7 +16,7 @@ class relay:
 	io.setwarnings(False)
 	self.pin = pin
 	io.setup(self.pin, io.OUT, initial=HIGH)
-        self.state = 0
+	self.state = 0
 
     def on(self):
         self.state = 1
@@ -35,9 +35,9 @@ class relay:
 	
     def set(self, set_value):
 	if set_value:
-	    self.on()
+		self.on()
 	elif not(set_value):
-	    self.off()
+		self.off()
 
     def state(self):
         return self.state
