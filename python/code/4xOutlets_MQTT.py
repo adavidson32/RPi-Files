@@ -5,9 +5,9 @@ import RPi.GPIO as io
 # Outlets contains dictionairies for each Outlet.
 # last = currently set, new = new value to set
 # ex. Outlet-1 has pin 19, and is currently off
-Outlets = {'O1': {'pin': 19, 'last': 0, 'new': -1}, 
+Outlets = {'O1': {'pin': 6, 'last': 0, 'new': -1}, 
            'O2': {'pin': 5, 'last': 0, 'new': -1}, 
-           'O3': {'pin': 6, 'last': 0, 'new': -1}, 
+           'O3': {'pin': 19, 'last': 0, 'new': -1}, 
            'O4': {'pin': 13, 'last': 0, 'new': -1}}
 
 # ADAFRUIT_IO dict with keys KEY and USERNAME
@@ -18,6 +18,7 @@ sample_rate = 10.0 #How often to send temperature value
 room_temp = 10.0 #Initial value (could be anything....)
 
 io.setmode(io.BCM)
+io.setwarnings(False)
 io.setup(Outlets['O1']['pin'], io.OUT, initial=io.HIGH)
 io.setup(Outlets['O2']['pin'], io.OUT, initial=io.HIGH)
 io.setup(Outlets['O3']['pin'], io.OUT, initial=io.HIGH)
