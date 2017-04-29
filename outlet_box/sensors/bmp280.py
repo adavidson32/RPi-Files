@@ -57,7 +57,7 @@ class BMP280(object):
         self.dp_altitude = dec_places['altitude']
 
 #----------------------------------------------------------------------
-        
+
     def _load_calibration(self):
         self.cal_t1 = int(self._device.readU16(BMP280_DIG_T1))  # UINT16
         self.cal_t2 = int(self._device.readS16(BMP280_DIG_T2))  # INT16
@@ -108,7 +108,7 @@ class BMP280(object):
         raw >>= 4
         self._logger.debug('Raw value 0x{0:X} ({1})'.format(raw & 0xFFFF, raw))
         return raw
-    
+
     def _compensate_temp(self, raw_temp):
         """ Compensate temperature """
         t1 = (((raw_temp >> 3) - (self.cal_t1 << 1)) *
@@ -119,20 +119,20 @@ class BMP280(object):
         return t1 + t2
 
 #----------------------------------------------------------------------
-      
-    def temp(self):
+
+    def temp(self, units=self.units_temp, dp=self.dp_temp):
         """Gets the compensated temperature in degrees celsius."""
         raw_temp = self.read_raw(BMP280_TEMPDATA)
         compensated_temp = self._compensate_temp(raw_temp)
         temp = float(((compensated_temp * 5 + 128) >> 8)) / 100
         self._logger.debug('Calibrated temperature {0}'.format(temp))
-        if self.units_temp = 'f':
+        if units = 'f':
             temp = ((temp * 1.8) + 32.0)
-        return round(temp, self.dp_temp)
+        return round(temp, dp)
 
-#----------------------------------------------------------------------      
-      
-    def pressure(self):
+#----------------------------------------------------------------------
+
+    def pressure(self, units=self.units_pressure, dp=self.dp_pressure):
         """Gets the compensated pressure in Pascals."""
         raw_temp = self.read_raw(BMP280_PRESSUREDATA)
         compensated_temp = self._compensate_temp(raw_temp)
@@ -150,12 +150,12 @@ class BMP280(object):
         p2 = (self.cal_p8 * p) >> 19
         p = ((p + p1 + p2) >> 8) + ((self.cal_p7) << 4)
         p_ret = float(p / 256)
-        if units_pressure = 'atm':
-            p_ret = p_ret * 0.00000
-        return float(p / 256)
+        if units = 'atm':
+            p_ret = p_ret * 0.00000986923169
+        return round(p_ret, dp)
 
 #----------------------------------------------------------------------
-      
+
     def altitude(self, sealevel_pa=101325.0):
         """Calculates the altitude in meters."""
         # Calculation taken straight from section 3.6 of the datasheet.
@@ -165,7 +165,7 @@ class BMP280(object):
         return altitude
 
 #----------------------------------------------------------------------
-      
+
     def read_sealevel_pressure(self, altitude_m=0.0):
         """Calculates the pressure at sealevel when given a known altitude in
         meters. Returns a value in Pascals."""
@@ -173,5 +173,5 @@ class BMP280(object):
         p0 = pressure / pow(1.0 - altitude_m / 44330.0, 5.255)
         self._logger.debug('Sealevel pressure {0} Pa'.format(p0))
         return p0
- 
+
 #----------------------------------------------------------------------

@@ -1,9 +1,56 @@
-Individual Sensor Read(s):
- - DS18B20 read:
-   - input read_freq, run_time
-   - maybe input which GPIO bus is connected to...
- - BMP280 read:
-   - input read_freq, run_tim
-   - may need to add code to print i2c address output and have user choose which address device is on
+Individual Sensor Use:
 
+
+- DS18B20: script with class definition for ds18b20(s). 
+
+   - DS18B20 library:
+	   - Initialize with:
+		 - from ds18b20 import DS18B20
+		 - ds = DS18B20()
+	   - Functions:
+		 - ds.temp_c(index=0, dec_points=2)  -->  returns temp in celcius (float)
+		 - ds.temp_f(index=0, dec_points=2)  -->  returns temp in fahrenheit (float)
+		 - ds.num_devices()  -->  returns number of devices (integer)
+		 - ds.device_id(index=0)  -->  returns device ID (string) of ds18b20 sensor at index
+		 - ds.temp_all_c(dec_points=2)  -->  returns temp in celcius (list of floats)
+		 - ds.temp_all_f(dec_points=2)  -->  returns temp in fahrenheit (list of floats)
+ 
+   - W1ThermSensor library:
+       - Initialize with:
+	     - from w1thermsensor import W1ThermSensor as w1-ds
+		 - Only 1 Sensor: 
+		   - ds = w1-ds() or,
+		   - ds = w1-ds(w1-ds.THERM_SENSOR_DS18B20, "00000588806a") <-- example ds18b20 address
+		 - Multiple Sensors:
+		   ds_addr = ('',)
+		   ds = ('',)
+		   for ds in w1-ds.get_available_sensors():
+		     ds_addr += ds.id
+			 ds += w1-ds(w1-ds.THERM_SENSOR_DS18B20, ds.id)
+		   ds_addr = ds_addr[1:]
+		   ds = ds[1:]
+	   - Functions:
+		 - Only 1 Sensor:
+		   temp_c = ds.get_temperature()
+		 - Multiple Sensors: 
+		   ds_temps = list of length len(ds)
+		   for i in range(len(ds)):
+		     ds_temps[i] = ds[i].get_temperature()
+		    
+			
+- BMP280 read: script with class definition for BMP280.
+   - Initialize with:
+     - from bmp280 import BMP280
+	 - bmp = BMP280(i2c_addr=68)  <-- input i2c address of bmp280 sensor
+   - Functions:
+     - bmp.temp_c(dec_points=2)  -->  returns temp in celcius (float)
+	 - bmp.temp_f(dec_points=2)  -->  returns temp in fahrenheit (float)
+	 - bmp.pressure_pa(dec_points=1)  -->  returns pressure in pascals (float)
+	 - bmp.pressure_atm(dec_points=3)  -->  returns pressure in atm (float)
+	 - bmp.altitude_m(dec_points=1)  -->  returns altitude in meters (float)
+	 - bmp.altitude_f(dec_points=1)  -->  returns altitude in feet (float)
+	 - bmp.p_sea_lvl(dec_points=1)  -->  returns pressure in pascals at sealevel (float)
+	 
+- BH1750 read:
+   - 
 MQTT Scripts:
