@@ -37,30 +37,16 @@ def disconnected(client):
     sys.exit(1)
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
-    if payload[0:6] == 'Outlet':
-        outlet_num = payload[6]
-        if payload[-3:] in ('-ON', '-on', '-On'):
-            function = 'ON'
-        elif payload[-4:] == '-OFF'
-            function
-        elif type(int(payload[-1])) == type(5):
-            function = 'flip'
-        if payload[-4:] = '1234':
-            if function == 'ON':
-                relays.on('all')
-            elif function == 'OFF'
-                relays.off('all')
-            elif function == 'flip'
-                relays.flip('all')
-        else:
-            pin = int(pin)
-            if function == "ON":
-                relays.on(pin)
-            elif function == 'OFF'
-                relays.off(pin)
-            elif function == 'flip'
-                relays.flip(pin)
-
+    if (payload[0:6] == 'Outlet'):
+        if (payload[-1] in ('1', '2', '3', '4')):
+            outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            relays.flip(outlet_num)
+        elif payload[-3:] in ('-ON', '-on', '-On'):
+            outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            relays.on(outlet_num)
+        elif payload[-4:] in ('-OFF', '-off', '-Off'):
+            outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            relays.off(outlet_num)
     print('O1: {}, O2: {}, O3: {}, O4: {}'.format(relays.receive_info_states()))
 
 #--------------------------------MAIN CODE-------------------------------
