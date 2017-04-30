@@ -13,7 +13,7 @@
 #
 #-----------------------INITIALIZE+SETUP DS18B20-------------------------
 
-import RPi-GPIO as io
+import RPi.GPIO as io
 from time import time as now
 
 class relay:
