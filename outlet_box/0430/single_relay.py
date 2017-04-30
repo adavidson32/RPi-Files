@@ -23,7 +23,7 @@ class relay:
         self.pin = pin
         io.setmode(io.BCM)
         io.setwarnings(False)
-        io.setup(self.pin, io.OUT, initial=HIGH)
+        io.setup(self.pin, io.OUT, initial=io.HIGH)
         self.state = 0
         self.t_change = now()
 
