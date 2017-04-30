@@ -13,7 +13,7 @@ from single_relay import relay
 
 class four_relays:
     def __init__(self, pins, names, types):
-        Out = ('', '', '', '')
+        self.Out = ('', '', '', '')
         self.Out[0] = relay(pins[0], names[0], types[0])
         self.Out[1] = relay(pins[1], names[1], types[1])
         self.Out[2] = relay(pins[2], names[2], types[2])
