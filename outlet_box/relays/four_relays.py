@@ -18,6 +18,7 @@ class four_relays:
         self.Out[1] = relay(pins[1], names[1], types[1])
         self.Out[2] = relay(pins[2], names[2], types[2])
         self.Out[3] = relay(pins[3], names[3], types[3])
+        self.names = names
         self.states = [0, 0, 0, 0]
         self.times = [0, 0, 0, 0]
         self.types = (self.Out[0].info('type'), self.Out[1].info('type'), self.Out[2].info('type'), self.Out[3].info('type'))
@@ -79,14 +80,16 @@ class four_relays:
     def w_parse(self, which):
         if which in ('all', '1234', 'O1234', 'ALL', 'All', [1,1,1,1], 'Outlet1234'):
             return -1
-        if which in ('Outlet1', 'O1', 'o1', 1, 0b1000):
+        elif which in ('Outlet1', 'O1', 'o1', 1, 0b1000):
             return 1
-        if which in ('Outlet2', 'O2', 'o2', 2, 0b0100):
+        elif which in ('Outlet2', 'O2', 'o2', 2, 0b0100):
             return 2
-        if which in ('Outlet3', 'O3', 'o3', 3, 0b0010):
+        elif which in ('Outlet3', 'O3', 'o3', 3, 0b0010):
             return 3
-        if which in ('Outlet4', 'O4', 'o4', 4, 0b0001):
+        elif which in ('Outlet4', 'O4', 'o4', 4, 0b0001):
             return 4
+        elif which in self.names:
+            return (self.names.index(which) + 1)
 
 #------------------------------------------------------------------------
 
@@ -117,5 +120,11 @@ class four_relays:
 
     def flip(self, outlets):
         self.set(outlets, 'flip')
+
+    def close(self):
+        self.Out[0].close()
+        self.Out[0].close()
+        self.Out[0].close()
+        self.Out[0].close()
 
 #-------------------------------------------------------------------------
