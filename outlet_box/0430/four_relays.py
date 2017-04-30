@@ -71,11 +71,11 @@ class four_relays:
 
     def v_parse(self, value):
         if values in ('flip', 'opposite', -1, [-1], '-1', (-1,)):
-            return = -1
+            return -1
         elif values in ('on', 'ON', 'On', 1, '1', [1], (1,)):
-            return = 1
+            return 1
         elif values in ('off', 'OFF', 'Off', 0, [0], (0,), '0'):
-            return = 0
+            return 0
 
     def w_parse(self, which):
         if which in ('all', '1234', 'O1234', 'ALL', 'All', [1,1,1,1], 'Outlet1234'):
