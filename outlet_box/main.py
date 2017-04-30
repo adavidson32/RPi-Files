@@ -37,48 +37,29 @@ def disconnected(client):
     sys.exit(1)
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
-    if payload == "O1-on":
-        Outlets['O1']['new'] = 1
-    elif payload == "O1-off":
-        Outlets['O1']['new'] = 0
-    elif payload == "O1":
-        Outlets['O1']['new'] = not(Outlets['O1']['last'])
-    elif payload == "O2-on":
-        Outlets['O2']['new'] = 1
-    elif payload == "O2-off":
-        Outlets['O2']['new'] = 0
-    elif payload == "O2":
-        Outlets['O2']['new'] = not(Outlets['O2']['last'])
-    elif payload == "O3-on":
-        Outlets['O3']['new'] = 1
-    elif payload == "O3-off":
-        Outlets['O3']['new'] = 0
-    elif payload == "O3":
-        Outlets['O3']['new'] = not(Outlets['O3']['last'])
-    elif payload == "O4-on":
-        Outlets['O4']['new'] = 1
-    elif payload == "O4-off":
-        Outlets['O4']['new'] = 0
-    elif payload == "O4":
-        Outlets['O4']['new'] = not(Outlets['O4']['last'])
-    elif payload == "Oa-on":
-        for i in Outlets:
-            Outlets[i]['new'] = 1
-    elif payload == "Oa-off":
-        for i in Outlets:
-            Outlets[i]['new'] = 0
-    elif payload == "Oa":
-        for i in Outlets:
-            Outlets[i]['new'] = not(Outlets[i]['last'])
-    for x in Outlets:
-        if not(Outlets[x]['new'] == -1):
-            if Outlets[x]['new'] == 1:
-                relays.on(Outlets[x]['name'])
-            else:
-                relays.off(Outlets[x]['name'])
-            Outlets[x]['last'] = Outlets[x]['new']
-            Outlets[x]['new'] = -1
-    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets['O1']['last'], Outlets['O2']['last'], Outlets['O3']['last'], Outlets['O4']['last']))
+    if payload[0:6] == 'Outlet':
+        pin = payload[6]
+        if payload[-3] == '-':
+            function = payload[-2:]
+        elif type(int(payload[-1])) == type(5):
+            function = 'flip'
+        if payload[-4:] = '1234':
+            if function == 'ON':
+                relays.on('all')
+            elif function == 'OFF'
+                relays.off('all')
+            elif function == 'flip'
+                relays.flip('all')
+        else:
+            pin = int(pin)
+            if function == "ON":
+                relays.on(pin)
+            elif function == 'OFF'
+                relays.off(pin)
+            elif function == 'flip'
+                relays.flip(pin)
+
+    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(relays.state('all')))
 
 #--------------------------------MAIN CODE-------------------------------
 

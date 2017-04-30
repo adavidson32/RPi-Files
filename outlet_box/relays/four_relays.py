@@ -142,3 +142,12 @@ class four_relays:
             self.O3.off()
           elif int(outlets[i+8]) == 4:
             self.O4.off()
+
+    def flip(self, pin):
+        if pin == 'all':
+            return 'new_state: '
+
+            
+    def state(self, pin):
+        if pin == 'all':
+            return 'all states: '
