@@ -23,6 +23,8 @@ room_temp = 10.0 #Initial value (could be anything....)
 #--------------------------------IMPORTS---------------------------------
 
 import time, sys
+sys.path.append('~/git/RPi-Files/outlet_box/relays')
+sys.path.append('~/git/RPi-Files/outlet_box/sensors')
 from Adafruit_IO import MQTTClient
 from four_relays import four_relays
 from ds18b20 import DS18B20
