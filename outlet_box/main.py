@@ -1,24 +1,16 @@
-import time, sys
-from Adafruit_IO import MQTTClient
-from four_relays import four_relays
-from ds18b20 import DS18B20
-from bmp280 import BMP280
+#-------------------------------main.py----------------------------------
 
-# Outlets contains dictionairies for each Outlet.
-# last = currently set, new = new value to set
-# ex. Outlet-1 has pin 19, and is currently off
-Outlets = {'O1': {'pin': 19, 'name': 'futon lights', 'last': 0, 'new': -1},
-           'O2': {'pin': 5, 'name': 'iPhone charger', 'last': 0, 'new': -1},
-           'O3': {'pin': 6, 'name': 'bed light', 'last': 0, 'new': -1},
-           'O4': {'pin': 13, 'name': 'desk light', 'last': 0, 'new': -1}}
+#--------------------------OUTLET VARIABLES------------------------------
 
-ds = DS18B20('f', 2)
-num_ds = ds.device_count()
-print('Number of DS18B20 sensors detected: {}'.format(num_ds))
-#bmp = BMP280()
+Outlets = {'O1': {'pin': 19, 'name': 'O1', 'last': 0, 'new': -1},
+           'O2': {'pin': 5, 'name': 'O2', 'last': 0, 'new': -1},
+           'O3': {'pin': 6, 'name': 'desk light', 'last': 0, 'new': -1},
+           'O4': {'pin': 13, 'name': 'room lights', 'last': 0, 'new': -1}}
+
 outlet_pins = (Outlets['O1']['pin'], Outlets['O2']['pin'], Outlets['O3']['pin'], Outlets['O4']['pin'])
 outlet_names = (Outlets['O1']['name'], Outlets['O2']['name'], Outlets['O3']['name'], Outlets['O4']['name'])
-relays = four_relays(outlet_pins, outlet_names)
+
+#---------------------------OTHER VARIABLES------------------------------
 
 # ADAFRUIT_IO dict with keys KEY and USERNAME
 ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
@@ -26,6 +18,16 @@ SUB_FEED = 'IFTTT'
 PUB_FEEDS = ('RoomTemp', 'AirPressure', 'AmbientLight', 'Motion', 'Altitude')
 sample_rate = 10.0 #How often to send temperature value
 room_temp = 10.0 #Initial value (could be anything....)
+
+#--------------------------------IMPORTS---------------------------------
+
+import time, sys
+from Adafruit_IO import MQTTClient
+from four_relays import four_relays
+from ds18b20 import DS18B20
+from bmp280 import BMP280
+
+#-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
 def connected(client):
     print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEED))
@@ -71,18 +73,26 @@ def message(client, feed_id, payload):
     for x in Outlets:
         if not(Outlets[x]['new'] == -1):
             if Outlets[x]['new'] == 1:
-                io.output(Outlets[x]['pin'], io.LOW)
+                relays.on(Outlets[x]['name'])
             else:
-                io.output(Outlets[x]['pin'], io.HIGH)
+                relays.off(Outlets[x]['name'])
             Outlets[x]['last'] = Outlets[x]['new']
             Outlets[x]['new'] = -1
     print('O1: {}, O2: {}, O3: {}, O4: {}'.format(Outlets['O1']['last'], Outlets['O2']['last'], Outlets['O3']['last'], Outlets['O4']['last']))
+
+#--------------------------------MAIN CODE-------------------------------
 
 client = MQTTClient(ADAFRUIT_IO['USERNAME'], ADAFRUIT_IO['KEY'])
 client.on_connect    = connected
 client.on_disconnect = disconnected
 client.on_message    = message
 client.connect()
+
+relays = four_relays(outlet_pins, outlet_names)
+ds = DS18B20('f', 2)
+num_ds = ds.device_count()
+print('Number of DS18B20 sensors detected: {}'.format(num_ds))
+#bmp = BMP280()
 
 last = 0
 print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
@@ -95,3 +105,5 @@ while True:
        print('Publishing {0:.2f}F to RoomTemp feed.'.format(coffee_temp))
        client.publish(PUB_FEED, coffee_temp)
        last = time.time()
+
+#------------------------------------------------------------------------

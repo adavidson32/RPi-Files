@@ -1,11 +1,20 @@
+#-------------------------------bmp280.py-------------------------------
+
+# Usage:
+#   from bmp280 import BMP280
+#   bmp = BMP280(units, dec_places) <-- units and dec_places example shown above....
+#   temp = bmp.temp()
+#   pressure = bmp.pressure()
+#   altitude = bmp.altitude()
+
+#----------------IMPORT LIBRARIES + DECLARE VARIABLES-------------------
+
 import logging
 import Adafruit_GPIO.I2C as I2C
 
 i2c = I2C()
-# BMP280 default address.
 BMP280_I2CADDR = 0x76
 BMP280_CHIPID = 0xD0
-# BMP280 Registers
 BMP280_DIG_T1 = 0x88  # R   Unsigned Calibration data (16 bits)
 BMP280_DIG_T2 = 0x8A  # R   Signed Calibration data (16 bits)
 BMP280_DIG_T3 = 0x8C  # R   Signed Calibration data (16 bits)
@@ -24,22 +33,18 @@ BMP280_CONFIG = 0xF5
 BMP280_PRESSUREDATA = 0xF7
 BMP280_TEMPDATA = 0xFA
 
-#----------------------------------------------------------------------
+#---------------------SET UNITS + DECIMAL PLACES-------------------------
+
+# temp units = 'f' or 'c', pressure units = 'Pa' or 'atm', altitude units = 'meters' or 'feet'
 units_std = {'temp': 'f', 'pressure': 'atm', 'altitude': 'feet'}
 units_met = {'temp': 'c', 'pressure': 'Pa', 'altitude': 'meters'}
-# temp units = 'f' or 'c', pressure units = 'Pa' or 'atm', altitude units = 'meters' or 'feet'
 dec_places_std = {'temp': 2, 'pressure': 3, 'altitude': 1}
 dec_places_met = {'temp': 2, 'pressure': 1, 'altitude': 1}
 
-# Usage:
-#   from bmp280 import BMP280
-#   bmp = BMP280(units, dec_places) <-- units and dec_places example shown above....
-#   temp = bmp.
-
-#----------------------------------------------------------------------
+#-----------------------INITIALIZE+SETUP BMP280--------------------------
 
 class BMP280(object):
-    def __init__(self, address=BMP280_I2CADDR, i2c=None, **kwargs, units=units_std, dec_places=dec_places_std):
+    def __init__(self, address=BMP280_I2CADDR, units=units_std, dec_places=dec_places_std, i2c=None, **kwargs):
         self._logger = logging.getLogger('Adafruit_BMP.BMP280')
         self._device = i2c.get_i2c_device(address, **kwargs)
         chip_ip = self._device.readU8(BMP280_CHIPID)
@@ -56,7 +61,7 @@ class BMP280(object):
         self.dp_pressure = dec_places['pressure']
         self.dp_altitude = dec_places['altitude']
 
-#----------------------------------------------------------------------
+#------------------------------UNUSED------------------------------------
 
     def _load_calibration(self):
         self.cal_t1 = int(self._device.readU16(BMP280_DIG_T1))  # UINT16
@@ -118,7 +123,7 @@ class BMP280(object):
               (self.cal_t3)) >> 14
         return t1 + t2
 
-#----------------------------------------------------------------------
+#--------------------------------TEMP----------------------------------
 
     def temp(self, units=self.units_temp, dp=self.dp_temp):
         """Gets the compensated temperature in degrees celsius."""
@@ -130,7 +135,7 @@ class BMP280(object):
             temp = ((temp * 1.8) + 32.0)
         return round(temp, dp)
 
-#----------------------------------------------------------------------
+#-------------------------------PRESSURE-------------------------------
 
     def pressure(self, units=self.units_pressure, dp=self.dp_pressure):
         """Gets the compensated pressure in Pascals."""
@@ -154,17 +159,19 @@ class BMP280(object):
             p_ret = p_ret * 0.00000986923169
         return round(p_ret, dp)
 
-#----------------------------------------------------------------------
+#------------------------------ALTITUDE--------------------------------
 
-    def altitude(self, sealevel_pa=101325.0):
+    def altitude(self, sealevel_pa=101325.0, units=self.units_altitude, dp=self.dp_altitude):
         """Calculates the altitude in meters."""
         # Calculation taken straight from section 3.6 of the datasheet.
         pressure = float(self.pressure())
         altitude = 44330.0 * (1.0 - pow(pressure / sealevel_pa, (1.0 / 5.255)))
         self._logger.debug('Altitude {0} m'.format(altitude))
-        return altitude
+        if units = 'feet':
+            altitude = altitude * 3.28084
+        return round(altitude, dp)
 
-#----------------------------------------------------------------------
+#--------------------------SEA LEVEL PRESSURE--------------------------
 
     def read_sealevel_pressure(self, altitude_m=0.0):
         """Calculates the pressure at sealevel when given a known altitude in
@@ -172,6 +179,8 @@ class BMP280(object):
         pressure = float(self.pressure())
         p0 = pressure / pow(1.0 - altitude_m / 44330.0, 5.255)
         self._logger.debug('Sealevel pressure {0} Pa'.format(p0))
-        return p0
+        if self.units_pressure = 'atm':
+            p0 = p0 * 0.00000986923169
+        return round(p0, dp_pressure)
 
 #----------------------------------------------------------------------
