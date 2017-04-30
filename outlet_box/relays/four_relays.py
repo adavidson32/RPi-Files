@@ -42,7 +42,7 @@ class four_relays:
         return (self.Out[0].info('pin'), self.Out[1].info('pin'), self.Out[2].info('pin'), self.Out[3].info('pin'))
 
     def retrieve_info_all(self):
-        return {'O1': self.Out[0].info('all'), 'O2': self.Out[1].info('all'), 'O3': self.Out[2].info('all'), 'O4': self.Out[3].info('all'))
+        return {'O1': self.Out[0].info('all'), 'O2': self.Out[1].info('all'), 'O3': self.Out[2].info('all'), 'O4': self.Out[3].info('all')}
 
 #--------------------------Parsing Functions-----------------------------
 
