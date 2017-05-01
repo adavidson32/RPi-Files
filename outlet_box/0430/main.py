@@ -5,8 +5,10 @@
 import time, sys
 sys.path.append('/home/pi/git/RPi-Files/outlet_box/relays')
 sys.path.append('/home/pi/git/RPi-Files/outlet_box/sensors')
+sys.path.append('/home/pi/git/RPi-Files/outlet_box/0430')
 from Adafruit_IO import MQTTClient
 from four_relays import four_relays
+from type_test import type_test
 from ds18b20 import DS18B20
 
 #--------------------------OUTLET VARIABLES------------------------------

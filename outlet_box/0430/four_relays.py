@@ -49,7 +49,11 @@ class four_relays:
 
     def calc(self, which, values=-1):
         type_which = type(which)
-        len_which = 1 if type_test(which) == 'int' else len(which)
+        len_which = 1 if type_test(which) == 'int' else 
+        if type_test(which) == 'str':
+            len_which = 1
+        else:
+            len_which = len(which)
         type_values, len_values = type(values), len(values)
         which_outlets = [0, 0, 0, 0]
         value_assignments = []
