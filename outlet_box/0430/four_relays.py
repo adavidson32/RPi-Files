@@ -70,11 +70,11 @@ class four_relays:
         return which_outlets, value_assignments
 
     def v_parse(self, value):
-        if values in ('flip', 'opposite', -1, [-1], '-1', (-1,)):
+        if value in ('flip', 'opposite', -1, [-1], '-1', (-1,)):
             return -1
-        elif values in ('on', 'ON', 'On', 1, '1', [1], (1,)):
+        elif value in ('on', 'ON', 'On', 1, '1', [1], (1,)):
             return 1
-        elif values in ('off', 'OFF', 'Off', 0, [0], (0,), '0'):
+        elif value in ('off', 'OFF', 'Off', 0, [0], (0,), '0'):
             return 0
 
     def w_parse(self, which):
