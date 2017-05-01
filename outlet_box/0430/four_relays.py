@@ -142,6 +142,7 @@ class four_relays:
                     self.states[i] = self.Out[i].info('state')
                 print('Outlet #{} changed to ({})'.format((i+1), self.states[i]))
                 self.times[i] = self.Out[i].info('time')
+        print('new states: ', retrieve_info_states)
 
     def set(self, outlets, values):
         print('starting set({}, {})'.format(outlets, values))
