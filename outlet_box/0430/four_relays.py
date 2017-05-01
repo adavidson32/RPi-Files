@@ -48,15 +48,16 @@ class four_relays:
     #--------------------------Parsing Functions-----------------------------
 
     def calc(self, which, values=-1):
-        type_which, num_which = type_test(which)
-        if type_which == 'int':
-            len_which = 1
-            outlet_num = num_which
-        else:
-            len_which = num_which
-        type_values, len_values = type(values), len(values)
         which_outlets = [0, 0, 0, 0]
         value_assignments = []
+        type_values, len_values = type_test(values), len(values)
+        type_which = type_test(which)
+        if type_which == 'str-int':
+            len_which = 1
+            outlet_num = int(which)
+        elif type_which == 'int'
+            len_which = 1
+            outlet_num = which
         if (len_which > 4 or len_values > 4):
             return 'error: which or values is too large (>4)'
         if len_values == 1:
@@ -67,7 +68,10 @@ class four_relays:
                 value_assignments[i] = self.v_parse(values[i])
         if len_which == 1:
             w = self.w_parse(which)
-            which_outlets[w-1] = 1
+            if w == -1:                     # (w == -1) if (which_outlets == 'all')
+                which_outlets[:] = 1
+            else:
+                which_outlets[w-1] = 1      # (w != -1) if (which_outlets in [1, 2, 3, 4])
         elif len_which in [2, 3, 4]:
             for i in range(len_which):
                 which_outlets[self.w_parse(which[i])-1] = 1
