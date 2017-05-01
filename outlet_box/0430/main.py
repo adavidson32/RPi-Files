@@ -94,7 +94,7 @@ try:
            client.publish(PUB_FEEDS['temp'], var.room_temp)
            var.last = time.time()
 except KeyboardInterrupt:
-    relays.cleanup()
+    relays.close()
 
 
 #------------------------------------------------------------------------
