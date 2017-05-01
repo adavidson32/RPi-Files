@@ -27,8 +27,12 @@ print("Types: {}, {}, {}, {}".format(outlet_types[0], outlet_types[1], outlet_ty
 
 # ADAFRUIT_IO dict with keys KEY and USERNAME
 ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
-SUB_FEED = 'IFTTT'
-PUB_FEEDS = ('RoomTemp', 'AirPressure', 'AmbientLight', 'Motion', 'Altitude')
+SUB_FEEDS = {'ifttt': 'IFTTT'}
+PUB_FEEDS = {'temp':     'RoomTemp',
+             'pressure': 'AirPressure',
+             'light':    'AmbientLight',
+             'pir':      'Motion',
+             'altitude': 'Altitude'}
 sample_rate = 10.0 #How often to send temperature value
 room_temp = 10.0 #Initial value (could be anything....)
 
@@ -36,7 +40,7 @@ room_temp = 10.0 #Initial value (could be anything....)
 
 def connected(client):
     print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEED))
-    client.subscribe(SUB_FEED)
+    client.subscribe(SUB_FEEDS['ifttt'])
 def disconnected(client):
     print('Disconnected from Adafruit IO!')
     sys.exit(1)
@@ -75,7 +79,7 @@ while True:
    if (time.time() - last) >= sample_rate:
        room_temp = ds.temp()
        print('Publishing {0:.2f}F to RoomTemp feed.'.format(room_temp))
-       client.publish(PUB_FEED, room_temp)
+       client.publish(PUB_FEEDS['temp'], room_temp)
        last = time.time()
 
 #------------------------------------------------------------------------
