@@ -49,7 +49,7 @@ class four_relays:
 
     def calc(self, which, values=-1):
         which_outlets = [0, 0, 0, 0]
-        value_assignments = [-1, -1, -1, -1]
+        value_assignments = [5, 5, 5, 5]
 
         type_values, len_values = type_test(values, options='len')
         print('value: {}, type: {}, len: {}'.format(values, type_values, len_values))
@@ -130,7 +130,7 @@ class four_relays:
         print('Using Outlets: {}'.format(outlets))
         print('Using Values: {}'.format(values))
         for i in range(4):
-            if outlets[i]:
+            if outlets[i] == 1:
                 if values[i] == -1:
                     self.states[i] = self.Out[i].flip()
                 elif values[i] in [0, 1]:
