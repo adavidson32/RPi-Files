@@ -1,12 +1,12 @@
 #--------------------------four_relays.py-------------------------------
-#
+
 # To use four_relays.py:
 #     from four_relays import four_relays
 #     outlet_pins = [4, 5, 6, 9]
 #     outlet_names = ('bed light', 'futon light', 'desk light', 'iPhone charger')
 #     ex. relays = four_relays(outlet_pins, outlet_names)
 #     relays.on('all'), relays.on(1), relays.on([2,3,4]), relays.on('outlets-134'), relays.on(('bed light', 'futon light'))
-#
+
 #-----------------------INITIALIZE+SETUP DS18B20-------------------------
 
 from single_relay import relay
@@ -24,10 +24,10 @@ class four_relays:
         self.types = (self.Out[0].info('type'), self.Out[1].info('type'), self.Out[2].info('type'), self.Out[3].info('type'))
         self.pins = (self.Out[0].info('pins'), self.Out[1].info('pins'), self.Out[2].info('pins'), self.Out[3].info('pins'))
 
-#---------------------INFO REQUESTING-----------------------------------
-# Call update_state_time() to retrieve state/t_change from single_relay.py and
-# save to self.info state info....
-# Call current_info or current_types to return all info or
+    #---------------------INFO REQUESTING-----------------------------------
+    # Call update_state_time() to retrieve state/t_change from single_relay.py and
+    # save to self.info state info....
+    # Call current_info or current_types to return all info or
 
     def retrieve_info_states(self):
         return (self.Out[0].info('state'), self.Out[1].info('state'), self.Out[2].info('state'), self.Out[3].info('state'))
@@ -44,7 +44,7 @@ class four_relays:
     def retrieve_info_all(self):
         return {'O1': self.Out[0].info('all'), 'O2': self.Out[1].info('all'), 'O3': self.Out[2].info('all'), 'O4': self.Out[3].info('all')}
 
-#--------------------------Parsing Functions-----------------------------
+    #--------------------------Parsing Functions-----------------------------
 
     def calc(self, which, values=-1):
         type_which, len_which = type(which), len(which)
@@ -91,7 +91,7 @@ class four_relays:
         elif which in self.names:
             return (self.names.index(which) + 1)
 
-#------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
     def update_states(self, outlets, values):
         #TD: After testing, remove or comment out all print statements
@@ -127,4 +127,4 @@ class four_relays:
         self.Out[0].close()
         self.Out[0].close()
 
-#-------------------------------------------------------------------------
+    #-------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 #--------------------------single_relay.py------------------------------
-#
+
 # Use:
 #    from single_relay.py import relay
 #    device = relay(5)....
@@ -10,7 +10,7 @@
 #    device.info('state')   -->  returns current state of device
 #    device.info('type')    -->  returns type device assigned to that outlet
 #    device.info()          -->  defaults to 'all' which returns all info
-#
+
 #-----------------------INITIALIZE+SETUP DS18B20-------------------------
 
 import RPi.GPIO as io

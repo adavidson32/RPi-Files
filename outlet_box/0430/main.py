@@ -1,5 +1,14 @@
 #-------------------------------main.py----------------------------------
 
+#--------------------------------IMPORTS---------------------------------
+
+import time, sys
+sys.path.append('/home/pi/git/RPi-Files/outlet_box/relays')
+sys.path.append('/home/pi/git/RPi-Files/outlet_box/sensors')
+from Adafruit_IO import MQTTClient
+from four_relays import four_relays
+from ds18b20 import DS18B20
+
 #--------------------------OUTLET VARIABLES------------------------------
 
 Outlets = {'O1': {'pin': 19, 'type': 'none' , 'name': 'O1'         , 'state': 0, 't_change': 0},
@@ -10,6 +19,9 @@ Outlets = {'O1': {'pin': 19, 'type': 'none' , 'name': 'O1'         , 'state': 0,
 outlet_pins = (Outlets['O1']['pin'], Outlets['O2']['pin'], Outlets['O3']['pin'], Outlets['O4']['pin'])
 outlet_names = (Outlets['O1']['name'], Outlets['O2']['name'], Outlets['O3']['name'], Outlets['O4']['name'])
 outlet_types = (Outlets['O1']['type'], Outlets['O2']['type'], Outlets['O3']['type'], Outlets['O4']['type'])
+print("Pins: {}, {}, {}, {}".format(outlet_pins))
+print("Names: {}, {}, {}, {}".format(outlet_names))
+print("Types: {}, {}, {}, {}".format(outlet_types))
 
 #---------------------------OTHER VARIABLES------------------------------
 
@@ -19,15 +31,6 @@ SUB_FEED = 'IFTTT'
 PUB_FEEDS = ('RoomTemp', 'AirPressure', 'AmbientLight', 'Motion', 'Altitude')
 sample_rate = 10.0 #How often to send temperature value
 room_temp = 10.0 #Initial value (could be anything....)
-
-#--------------------------------IMPORTS---------------------------------
-
-import time, sys
-sys.path.append('~/git/RPi-Files/outlet_box/relays')
-sys.path.append('~/git/RPi-Files/outlet_box/sensors')
-from Adafruit_IO import MQTTClient
-from four_relays import four_relays
-from ds18b20 import DS18B20
 
 #-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
