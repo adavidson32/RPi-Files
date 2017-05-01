@@ -102,7 +102,10 @@ def message(client, feed_id, payload):
 
 #--------------------------------MAIN CODE-------------------------------
 
+var = variables()
 ds, relays = var.ds, var.relays
+ADAFRUIT_IO, PUB_FEEDS, SUB_FEEDS = var.ADAFRUIT_IO, var.PUB_FEEDS, var.SUB_FEEDS
+
 client = MQTTClient(var.ADAFRUIT_IO['USERNAME'], var.ADAFRUIT_IO['KEY'])
 client.on_connect    = connected
 client.on_disconnect = disconnected
