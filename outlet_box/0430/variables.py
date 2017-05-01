@@ -6,7 +6,7 @@ class variables:
                         'O2': {'pin': 5 , 'type': 'none' , 'name': 'O2'         , 'state': 0, 't_change': 0},
                         'O3': {'pin': 6 , 'type': 'light', 'name': 'desklight' , 'state': 0, 't_change': 0},
                         'O4': {'pin': 13, 'type': 'light', 'name': 'roomlights', 'state': 0, 't_change': 0}}
-        self.outlet_keys = [key for key in self.Outlets.keys()]
+        self.outlet_keys = ['O1', 'O2', 'O3', 'O4']
         self.outlet_pins = [self.Outlets[key]['pin'] for key in self.outlet_keys]
         #self.Outlets['O1']['pin'], self.Outlets['O2']['pin'], self.Outlets['O3']['pin'], self.Outlets['O4']['pin'])
         self.outlet_names = [self.Outlets[key]['name'] for key in self.outlet_keys]
