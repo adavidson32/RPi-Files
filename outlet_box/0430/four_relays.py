@@ -55,7 +55,7 @@ class four_relays:
         if type_which == 'str-int':
             len_which = 1
             outlet_num = int(which)
-        elif type_which == 'int'
+        elif type_which == 'int':
             len_which = 1
             outlet_num = which
         if (len_which > 4 or len_values > 4):
