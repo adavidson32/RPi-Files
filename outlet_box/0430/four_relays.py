@@ -56,6 +56,7 @@ class four_relays:
         if type_values in ('int', 'str-int', 'str'):
             len_values = 1
             v = self.v_parse(values)
+            print('v = ', v)
             value_assignments = (v, v, v, v)
         elif type_values in ('tuple', 'list'):
             if len_values not in (1, 2, 3, 4):
@@ -86,6 +87,7 @@ class four_relays:
         elif type_which in ('str-int', 'int', 'str'):
             len_which = 1
             w = self.w_parse(which)
+            print('w = ', w)
             if w == -1:                     # (w == -1) if (which_outlets == 'all')
                 which_outlets = (1, 1, 1, 1)
             else:
