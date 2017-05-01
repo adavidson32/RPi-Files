@@ -96,7 +96,7 @@ class four_relays:
         return which_outlets, value_assignments
 
     def v_parse(self, value):
-        print('starting v_parse')
+        #print('starting v_parse')
         if value in ('flip', 'opposite', -1, [-1], '-1', (-1,)):
             return -1
         elif value in ('on', 'ON', 'On', 1, '1', [1], (1,)):
@@ -108,7 +108,7 @@ class four_relays:
             return 'error'
 
     def w_parse(self, which):
-        print('starting w_parse')
+        #print('starting w_parse')
         if which in ('all', '1234', 'ALL', 'All', 1234, '*', 'a'):
             return -1
         elif which in ('1', 1):
@@ -140,7 +140,7 @@ class four_relays:
                 elif values[i] in [0, 1]:
                     self.Out[i].set(values[i])
                     self.states[i] = self.Out[i].info('state')
-                print('Outlet #{} changed to ({})'.format((i+1), self.states[i]))
+                #print('Outlet #{} changed to ({})'.format((i+1), self.states[i]))
                 self.times[i] = self.Out[i].info('time')
         print('new states: ', self.retrieve_info_states())
 
