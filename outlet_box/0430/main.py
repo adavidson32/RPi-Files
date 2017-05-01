@@ -1,8 +1,7 @@
 #-------------------------------main.py----------------------------------
 
-#--------------------------------IMPORTS---------------------------------
-
 import time, sys
+from variables import variables
 sys.path.append('/home/pi/git/RPi-Files/outlet_box/relays')
 sys.path.append('/home/pi/git/RPi-Files/outlet_box/sensors')
 sys.path.append('/home/pi/git/RPi-Files/outlet_box/0430')
@@ -10,42 +9,6 @@ from Adafruit_IO import MQTTClient
 from four_relays import four_relays
 from type_test import type_test
 from ds18b20 import DS18B20
-
-#--------------------------OUTLET VARIABLES------------------------------
-class variables:
-    def __init__(self):
-        self.Outlets = {'O1': {'pin': 19, 'type': 'none' , 'name': 'O1'         , 'state': 0, 't_change': 0},
-                        'O2': {'pin': 5 , 'type': 'none' , 'name': 'O2'         , 'state': 0, 't_change': 0},
-                        'O3': {'pin': 6 , 'type': 'light', 'name': 'desk light' , 'state': 0, 't_change': 0},
-                        'O4': {'pin': 13, 'type': 'light', 'name': 'room lights', 'state': 0, 't_change': 0}}
-        self.outlet_pins = (Outlets['O1']['pin'], Outlets['O2']['pin'], Outlets['O3']['pin'], Outlets['O4']['pin'])
-        self.outlet_names = (Outlets['O1']['name'], Outlets['O2']['name'], Outlets['O3']['name'], Outlets['O4']['name'])
-        self.outlet_types = (Outlets['O1']['type'], Outlets['O2']['type'], Outlets['O3']['type'], Outlets['O4']['type'])
-        print("Pins: {}, {}, {}, {}".format(outlet_pins[0], outlet_pins[1], outlet_pins[2], outlet_pins[3]))
-        print("Names: {}, {}, {}, {}".format(outlet_names[0], outlet_names[1], outlet_names[2], outlet_names[3]))
-        print("Types: {}, {}, {}, {}".format(outlet_types[0], outlet_types[1], outlet_types[2], outlet_types[3]))
-        self.ADAFRUIT_IO
-        self.SUB_FEEDS
-        self.PUB_FEEDS
-        self.t_rate = 10.0
-        self.room_temp = -1
-        self.relays = four_relays(var.outlet_pins, var.outlet_names, var.outlet_types)
-        self.ds = DS18B20('f', 2)
-        self.num_ds = ds.num_ds()
-        self.ADAFRUIT_IO = {'KEY': '11e4014862694ae6a474e89ece59c049', 'USERNAME': 'adavidson93'}
-        self.SUB_FEEDS = {'ifttt': 'IFTTT'}
-        self.PUB_FEEDS = {'temp':     'RoomTemp',
-                     'pressure': 'AirPressure',
-                     'light':    'AmbientLight',
-                     'pir':      'Motion',
-                     'altitude': 'Altitude'}
-        self.sample_rate = 10.0 #How often to send temperature value
-        self.room_temp = 10.0 #Initial value (could be anything....)
-        self.last = 0
-#---------------------------OTHER VARIABLES------------------------------
-
-# ADAFRUIT_IO dict with keys KEY and USERNAME
-
 
 #-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
@@ -103,10 +66,13 @@ def message(client, feed_id, payload):
 #--------------------------------MAIN CODE-------------------------------
 
 var = variables()
-ds, relays = var.ds, var.relays
 ADAFRUIT_IO, PUB_FEEDS, SUB_FEEDS = var.ADAFRUIT_IO, var.PUB_FEEDS, var.SUB_FEEDS
 
-client = MQTTClient(var.ADAFRUIT_IO['USERNAME'], var.ADAFRUIT_IO['KEY'])
+relays = four_relays(var.outlet_pins, var.outlet_names, var.outlet_types)
+ds = DS18B20('f', 2)
+num_ds = var.num_ds = ds.num_ds()
+
+client = MQTTClient(ADAFRUIT_IO['USERNAME'], ADAFRUIT_IO['KEY'])
 client.on_connect    = connected
 client.on_disconnect = disconnected
 client.on_message    = message
@@ -120,7 +86,7 @@ while True:
    if (time.time() - var.last) >= var.sample_rate:
        var.room_temp = ds.temp()
        #print('Publishing {0:.2f}F to RoomTemp feed.'.format(var.room_temp))
-       client.publish(var.PUB_FEEDS['temp'], var.room_temp)
+       client.publish(PUB_FEEDS['temp'], var.room_temp)
        var.last = time.time()
 
 #------------------------------------------------------------------------
