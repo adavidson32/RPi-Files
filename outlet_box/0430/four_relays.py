@@ -52,7 +52,7 @@ class four_relays:
         value_assignments = [-1, -1, -1, -1]
 
         type_values, len_values = type_test(values, options='len')
-        print('type: {}, len: {}'.format(type_values, len_values))
+        print('value: {}, type: {}, len: {}'.format(values, type_values, len_values))
         if type_values in ('tuple', 'list'):
             if len_values not in (1, 2, 3, 4):
                 print('too many values entered (enter 4 or less via list/tuple)')
@@ -65,10 +65,11 @@ class four_relays:
         elif type_values in ('int', 'str-int', 'str'):
             len_values = 1
             v = self.v_parse(values)
+            print(v)
             value_assignements = [v, v, v, v]
 
         type_which, len_which = type_test(which, options='len')
-        print('type: {}, len: {}'.format(type_which, len_which))
+        print('value: {}, type: {}, len: {}'.format(which, type_which, len_which))
         if (len_values != len_which) and (len_values != 1):
             print('Issue likely detected: (len_values != 1) and (len_values != len_which)')
         if type_which in ('tuple', 'list'):
