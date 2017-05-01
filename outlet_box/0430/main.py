@@ -100,7 +100,7 @@ def message(client, feed_id, payload):
     num_sec = payload_d['num_sections']
     if payload_d['sec1'] in ('Outlet', 'outlet', 'Outlets', 'outlets', 'Out', 'out', 'O') and (num_sec > 1):
         outlet_manager(payload_d)
-        info = relays.receive_info_states()
+        info = relays.retrieve_info_states()
         print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
 
 #--------------------------------MAIN CODE-------------------------------
