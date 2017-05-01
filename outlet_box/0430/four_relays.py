@@ -50,22 +50,24 @@ class four_relays:
     def calc(self, which, values=-1):
         which_outlets = [0, 0, 0, 0]
         value_assignments = []
-        type_values, len_values = type_test(values), len(values)
-        type_which = type_test(which)
-        if type_which == 'str-int':
+
+        type_values, other_values = type_test(values)
+        if type_values in ('str-int', 'int'):
+            len_values = 1
+        else:
+            len_values = other_values
+
+        type_which, other_which = type_test(which)
+        if type_which in ('str-int', 'int'):
             len_which = 1
-            outlet_num = int(which)
         elif type_which == 'int':
             len_which = 1
-            outlet_num = which
-        if (len_which > 4 or len_values > 4):
+
+        if (len_values != len_which) and (len_values != 1):
+            print('issue likely detected due to length of value/which inputs')
+        elif (len_which > 4 or len_values > 4):
             return 'error: which or values is too large (>4)'
-        if len_values == 1:
-            v = self.v_parse(values)
-            value_assignements = [v, v, v, v]
-        elif len_values in [2, 3, 4]:
-            for i in range(len_values):
-                value_assignments[i] = self.v_parse(values[i])
+
         if len_which == 1:
             w = self.w_parse(which)
             if w == -1:                     # (w == -1) if (which_outlets == 'all')
@@ -75,8 +77,14 @@ class four_relays:
         elif len_which in [2, 3, 4]:
             for i in range(len_which):
                 which_outlets[self.w_parse(which[i])-1] = 1
-        if (len_values != len_which) and (len_values != 1):
-            print('issue likely detected due to length of value/which inputs')
+
+        if len_values == 1:
+            v = self.v_parse(values)
+            value_assignements = [v, v, v, v]
+        elif len_values in [2, 3, 4]:
+            for i in range(len_values):
+                value_assignments[i] = self.v_parse(values[i])
+
         return which_outlets, value_assignments
 
     def v_parse(self, value):
