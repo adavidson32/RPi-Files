@@ -49,17 +49,19 @@ def payload_seperator(payload):
     elif num_sec in [2, 3, 4]:
         comma1 = payload.index(',')
         payload_d['sec1'] = payload[0:comma1]
-        payload_rem = payload[comma1+1:]
+        payload_rem = payload[comma1+1:-1]
+        print("sec1('{}')   remainder1('{}')".format(payload_d['sec1'], payload_rem))
         if num_sec in [3, 4]:
             comma2 = payload_rem.index(',')
-            payload_d['sec2'] = payload[comma1:comma2]
-            payload_rem = payload[comma2+1:]
+            payload_d['sec2'] = payload_rem[0:comma2]
+            payload_rem2 = payload_rem[comma2+1:-1]
+            print("sec2('{}')   new remainder2('{}')".format(payload_d['sec2'], payload_rem2))
             if num_sec == 4:
-                comma3 = payload.index(',')
-                payload_d['sec3'] = payload[comma2:comma3]
-                payload_d['sec4'] = payload[comma3:]
+                comma3 = payload_rem2.index(',')
+                payload_d['sec3'] = payload_rem2[0:comma3]
+                payload_d['sec4'] = payload_rem2[comma3:]
             else:
-                payload_d['sec3'] = payload[comma2:]
+                payload_d['sec3'] = payload_rem[comma2:]
                 print("3sec:  1('{}')   2('{}')   3('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_d['sec3']))
         else:
             payload_d['sec2'] = payload[comma1:]
