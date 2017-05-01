@@ -46,7 +46,9 @@ class DS18B20:
 
     #------------------------SINGLE TEMP CALC-------------------------------
 
-    def temp(self, index=0, units=self.units):
+    def temp(self, index=0, units=0):
+        if units == 0:
+            units = self.units
         # call this to get the temperature in degrees C
         # detected by a sensor
         lines = self._read_temp(index)
@@ -78,4 +80,4 @@ class DS18B20:
             temps += (round(temp(i), self.dec_places),)
         return temps[1:]
 
-#-----------------------------------------------------------------------
+    #-----------------------------------------------------------------------
