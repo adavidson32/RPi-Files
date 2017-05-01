@@ -4,8 +4,8 @@ class variables:
     def __init__(self):
         self.Outlets = {'O1': {'pin': 19, 'type': 'none' , 'name': 'O1'         , 'state': 0, 't_change': 0},
                         'O2': {'pin': 5 , 'type': 'none' , 'name': 'O2'         , 'state': 0, 't_change': 0},
-                        'O3': {'pin': 6 , 'type': 'light', 'name': 'desklight' , 'state': 0, 't_change': 0},
-                        'O4': {'pin': 13, 'type': 'light', 'name': 'roomlights', 'state': 0, 't_change': 0}}
+                        'O3': {'pin': 6 , 'type': 'light', 'name': 'desk light' , 'state': 0, 't_change': 0},
+                        'O4': {'pin': 13, 'type': 'light', 'name': 'room lights', 'state': 0, 't_change': 0}}
         self.outlet_keys = ['O1', 'O2', 'O3', 'O4']
         self.outlet_pins = [self.Outlets[key]['pin'] for key in self.outlet_keys]
         #self.Outlets['O1']['pin'], self.Outlets['O2']['pin'], self.Outlets['O3']['pin'], self.Outlets['O4']['pin'])
