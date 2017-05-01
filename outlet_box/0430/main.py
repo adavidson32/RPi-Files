@@ -10,6 +10,8 @@ from four_relays import four_relays
 from type_test import type_test
 from ds18b20 import DS18B20
 
+
+
 #-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
 def payload_seperator(payload, seperator=','):
@@ -63,6 +65,8 @@ def message(client, feed_id, payload):
         info = relays.retrieve_info_states()
         print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
 
+
+
 #--------------------------------MAIN CODE-------------------------------
 
 var = variables()
@@ -88,5 +92,7 @@ while True:
        #print('Publishing {0:.2f}F to RoomTemp feed.'.format(var.room_temp))
        client.publish(PUB_FEEDS['temp'], var.room_temp)
        var.last = time.time()
+
+
 
 #------------------------------------------------------------------------
