@@ -52,7 +52,7 @@ def message(client, feed_id, payload):
         if (payload[-1] in ('1', '2', '3', '4')):
             if payload[-4:] == '1234':
                 outlet_num = 'all'
-            elif len(payload) == 7):
+            elif len(payload) == 7:
                 outlet_num = int(payload[6])
             print('outlet_num: {}'.format(outlet_num))
             relays.flip(outlet_num)
