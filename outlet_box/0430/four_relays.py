@@ -131,8 +131,8 @@ class four_relays:
         print('starting update_states')
         #TD: After testing, remove or comment out all print statements
         #^^^ Maybe just leave 1x statement with new states....
-        print('Using Outlets: {}'.format(outlets))
-        print('Using Values: {}'.format(values))
+        print('Updating outlets to: {}'.format(outlets))
+        print('Updating values to: {}'.format(values))
         for i in range(4):
             if outlets[i] == 1:
                 if values[i] == -1:
@@ -144,25 +144,26 @@ class four_relays:
                 self.times[i] = self.Out[i].info('time')
 
     def set(self, outlets, values):
-        print('starting set')
+        print('starting set({}, {})'.format(outlets, values))
         outlets_org, values_org = self.calc(outlets, values)
-        print('outlets_org: {}'.format(outlets_org))
-        print('values_org: {}'.format(values_org))
         self.update_states(outlets_org, values_org)
         #(PPPP) print("self.Out[i].info('states') : {}, {}, {}, {}".format(self.retrieve_info_states()))
         #^^^^ Above function (set) is called for every on/off/flip so good place to put print statements...
 
     def on(self, outlets):
-        print('starting on with outlets = ({})'.format(outlets))
+        print('starting on({})'.format(outlets))
         self.set(outlets, 'on')
 
     def off(self, outlets):
+        print('starting off({})'.format(outlets))
         self.set(outlets, 'off')
 
     def flip(self, outlets):
+        print('starting flip({})'.format(outlets))
         self.set(outlets, 'flip')
 
     def close(self):
+        print('starting close()')
         self.Out[0].close()
         self.Out[0].close()
         self.Out[0].close()
