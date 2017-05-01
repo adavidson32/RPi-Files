@@ -1,12 +1,13 @@
 # type_test.py
 
 def type_test(variable):
-    return ('int', variable) if is_int(variable)
-    return ('str', len(variable) if is_str(variable)
-    return ('tuple', len(variable) if is_tuple(variable)
-    return ('list', len(variable) if is_list(variable)
-    return ('dict', len(variable) if is_dict(variable)
-    return ('str-int', is_string(variable) if is_strint(variable) >= 0
+    ret = ('int', variable) if is_int(variable)
+    ret = ('str', len(variable) if is_str(variable)
+    ret = ('tuple', len(variable) if is_tuple(variable)
+    ret = ('list', len(variable) if is_list(variable)
+    ret = ('dict', len(variable) if is_dict(variable)
+    ret = ('str-int', is_string(variable) if is_strint(variable) >= 0
+    return ret
 
 def is_int(variable):
     return True if (type(variable) == type(2)) else False
