@@ -109,10 +109,13 @@ class four_relays:
 
     def set(self, outlets, values):
         outlets_org, values_org = self.calc(outlets, values)
+        print('outlets_org: {}'.format(outlets_org))
+        print('values_org: {}'.format(values_org))
         self.update_states(outlets_org, values_org)
         #(PPPP) print("self.Out[i].info('states') : {}, {}, {}, {}".format(self.retrieve_info_states()))
         #^^^^ Above function (set) is called for every on/off/flip so good place to put print statements...
     def on(self, outlets):
+        print('on command: outlets={}'.format(outlets))
         self.set(outlets, 'on')
 
     def off(self, outlets):
