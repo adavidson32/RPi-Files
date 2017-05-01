@@ -31,7 +31,7 @@ class four_relays:
     # Call current_info or current_types to return all info or
 
     def retrieve_info_states(self):
-        return (self.Out[0].info('state'), self.Out[1].info('state'), self.Out[2].info('state'), self.Out[3].info('state'))
+        return [self.Out[0].info('state'), self.Out[1].info('state'), self.Out[2].info('state'), self.Out[3].info('state')]
 
     def retrieve_info_times(self):
         return (self.Out[0].info('time'), self.Out[1].info('time'), self.Out[2].info('time'), self.Out[3].info('time'))
