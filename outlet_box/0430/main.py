@@ -29,7 +29,7 @@ def payload_seperator(payload, seperator=','):
     return payload_dict
 
 def outlet_manager(payload_dict):
-    addr = payload_dict['sec2']
+    addr = payload_dict['sect2']
     if addr in ('ALL', 'All', 'all', '*', 'a', ':', '1234', 1234):
         outlet_addr = 'all'
     elif addr in (1, 2, 3, 4, '1', '2', '3', '4'):
@@ -60,7 +60,6 @@ def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     payload_dict = payload_seperator(payload, seperator=',')
     n_sect = payload_dict['n_sect']
-    print('payload_dict.items() -> ({})'.format(payload_dict.items()))
     if payload_dict['sect1'] in ('Outlet', 'outlet', 'Outlets', 'outlets', 'Out', 'out', 'O', 'o') and (n_sect > 1):
         outlet_manager(payload_dict)
         info = relays.retrieve_info_states()
