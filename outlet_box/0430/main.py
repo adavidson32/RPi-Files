@@ -64,7 +64,7 @@ client.connect()
 
 relays = four_relays(outlet_pins, outlet_names, outlet_types)
 ds = DS18B20('f', 2)
-num_ds = ds.device_count()
+num_ds = ds.num_ds()
 print('Number of DS18B20 sensors detected: {}'.format(num_ds))
 
 last = 0
