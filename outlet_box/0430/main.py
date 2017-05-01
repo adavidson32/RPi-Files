@@ -15,7 +15,7 @@ from ds18b20 import DS18B20
 #-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
 def payload_seperator(payload, seperator=','):
-    n_sect = payload.count(sep) + 1
+    n_sect = payload.count(seperator) + 1
     sections = [x.strip() for x in payload.split(seperator)]
     sect_range = range(len(sections))
     sect_names = ['sect{}'.format(i+1) for i in sect_range]
