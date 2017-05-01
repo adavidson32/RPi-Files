@@ -49,14 +49,18 @@ def message(client, feed_id, payload):
     if (payload[0:6] == 'Outlet'):
         if (payload[-1] in ('1', '2', '3', '4')):
             outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            print('outlet_num: {}'.format(outlet_num))
             relays.flip(outlet_num)
         elif payload[-3:] in ('-ON', '-on', '-On'):
             outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            print('outlet_num: {}'.format(outlet_num))
             relays.on(outlet_num)
         elif payload[-4:] in ('-OFF', '-off', '-Off'):
             outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            print('outlet_num: {}'.format(outlet_num))
             relays.off(outlet_num)
-    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(relays.receive_info_states()))
+    info = relays.receive_info_states()
+    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
 
 #--------------------------------MAIN CODE-------------------------------
 
