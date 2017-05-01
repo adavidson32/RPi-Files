@@ -48,15 +48,14 @@ def payload_seperator(payload):
         payload_d['sec1'] = payload[:]
     elif num_sec in [2, 3, 4]:
         comma1 = payload.index(',')
-        payload.remove(',')
         payload_d['sec1'] = payload[0:comma1]
+        payload_rem = payload[comma1+1:]
         if num_sec in [3, 4]:
-            comma2 = payload.index(',')
-            payload.remove(',')
+            comma2 = payload_rem.index(',')
             payload_d['sec2'] = payload[comma1:comma2]
+            payload_rem = payload[comma2+1:]
             if num_sec == 4:
                 comma3 = payload.index(',')
-                payload.remove(',')
                 payload_d['sec3'] = payload[comma2:comma3]
                 payload_d['sec4'] = payload[comma3:]
             else:
