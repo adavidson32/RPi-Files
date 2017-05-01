@@ -34,7 +34,7 @@ def outlet_manager(payload_dict):
         outlet_addr = 'all'
     elif addr in (1, 2, 3, 4, '1', '2', '3', '4'):
         outlet_addr = int(addr)
-    elif addr in outlet_names:
+    elif addr in var.outlet_names:
         outlet_addr = addr
     else:
         outlet_addr = 'all'
