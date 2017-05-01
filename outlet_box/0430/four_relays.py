@@ -111,13 +111,13 @@ class four_relays:
         print('starting w_parse')
         if which in ('all', '1234', 'ALL', 'All', 1234, '*', 'a'):
             return -1
-        elif which in ('1', 1, 0b1000):
+        elif which in ('1', 1):
             return 1
-        elif which in ('2', 2, 0b0100):
+        elif which in ('2', 2):
             return 2
-        elif which in ('3', 3, 0b0010):
+        elif which in ('3', 3):
             return 3
-        elif which in ('4', 4, 0b0001):
+        elif which in ('4', 4):
             return 4
         elif which in self.names:
             return (self.names.index(which) + 1)
