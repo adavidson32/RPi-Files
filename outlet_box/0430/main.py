@@ -19,9 +19,9 @@ Outlets = {'O1': {'pin': 19, 'type': 'none' , 'name': 'O1'         , 'state': 0,
 outlet_pins = (Outlets['O1']['pin'], Outlets['O2']['pin'], Outlets['O3']['pin'], Outlets['O4']['pin'])
 outlet_names = (Outlets['O1']['name'], Outlets['O2']['name'], Outlets['O3']['name'], Outlets['O4']['name'])
 outlet_types = (Outlets['O1']['type'], Outlets['O2']['type'], Outlets['O3']['type'], Outlets['O4']['type'])
-print("Pins: {}, {}, {}, {}".format(outlet_pins))
-print("Names: {}, {}, {}, {}".format(outlet_names))
-print("Types: {}, {}, {}, {}".format(outlet_types))
+print("Pins: {}, {}, {}, {}".format(outlet_pins[0], outlet_pins[1], outlet_pins[2], outlet_pins[3]))
+print("Names: {}, {}, {}, {}".format(outlet_names[0], outlet_names[1], outlet_names[2], outlet_names[3]))
+print("Types: {}, {}, {}, {}".format(outlet_types[0], outlet_types[1], outlet_types[2], outlet_types[3]))
 
 #---------------------------OTHER VARIABLES------------------------------
 
