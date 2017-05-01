@@ -39,7 +39,7 @@ room_temp = 10.0 #Initial value (could be anything....)
 #-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
 def connected(client):
-    print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEED))
+    print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEEDS['ifttt']))
     client.subscribe(SUB_FEEDS['ifttt'])
 def disconnected(client):
     print('Disconnected from Adafruit IO!')
