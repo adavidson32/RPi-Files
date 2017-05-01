@@ -46,20 +46,19 @@ def payload_seperator(payload):
     payload_d['num_sections'] = num_sec
     if num_sec == 1:
         payload_d['sec1'] = payload[:]
+        print("sec1('{}')".format(payload_d['sec1']))
     elif num_sec in [2, 3, 4]:
-        comma1 = payload.index(',')
-        payload_d['sec1'] = payload[0:comma1]
-        payload_rem = payload[comma1+1:-1]
-        print("sec1('{}')   remainder1('{}')".format(payload_d['sec1'], payload_rem))
+        i_comma1, i_sec2 = payload.index(','), payload.index(',') + 1
+        payload_d['sec1'], payload_sec2 = payload[0:i_comma1], payload[i_sec2:]
+        print("sec1('{}') rem('{}')".format(payload_d['sec1'], payload_sec2))
         if num_sec in [3, 4]:
-            comma2 = payload_rem.index(',')
-            payload_d['sec2'] = payload_rem[0:comma2]
-            payload_rem2 = payload_rem[comma2+1:-1]
-            print("sec2('{}')   new remainder2('{}')".format(payload_d['sec2'], payload_rem2))
+            i_comma2, i_sec3 = payload_sec2.index(','), payload_sec2.index(',') + 1
+            payload_d['sec2'], payload_sec3 = payload_sec2[0:i_comma2], payload_sec2[i_sec3:]
+            print("sec1('{}') sec2('{}') rem('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_sec3))
             if num_sec == 4:
-                comma3 = payload_rem2.index(',')
-                payload_d['sec3'] = payload_rem2[0:comma3]
-                payload_d['sec4'] = payload_rem2[comma3:]
+                i_comma3, i_sec4 = payload_sec3.index(','), payload_sec3.index(',') + 1
+                payload_d['sec3'], payload_d['sec4'] = payload_sec3[0:i_comma3], payload_sec3[i_sec4:]
+                print("sec1('{}') sec2('{}') sec3('{}') sec4('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_d['sec3'], payload_d['sec4']))
             else:
                 payload_d['sec3'] = payload_rem[comma2:]
                 print("3sec:  1('{}')   2('{}')   3('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_d['sec3']))
