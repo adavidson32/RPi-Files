@@ -46,7 +46,9 @@ def disconnected(client):
     sys.exit(1)
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
+    print('payload[0:6] - {}'.format(payload[0:6]))
     if (payload[0:6] == 'Outlet'):
+        print('payload[-1] - {}, payload[-3:] - {}, payload[-4:] - {}'.format(payload[-1], payload[-3:], payload[-4:]))
         if (payload[-1] in ('1', '2', '3', '4')):
             outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
             print('outlet_num: {}'.format(outlet_num))
