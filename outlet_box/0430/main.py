@@ -40,7 +40,7 @@ def outlet_manager(payload_dict):
         outlet_addr = 'all'
         print('outlet address outside of range (1/2/3/4/*), using default-->(all)')
     if (payload_dict['n_sect'] in [3,4]):
-        func = payload_dict['sec3']
+        func = payload_dict['sect3']
         if func in ('ON', 'On', 'on', 1, '1', 'HIGH', 'high', 'True', True):
             relays.on(outlet_addr)
         elif func in ('OFF', 'Off', 'off', 0, '0', 'LOW', 'low', 'False', 'False'):
