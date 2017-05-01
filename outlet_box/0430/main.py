@@ -40,6 +40,55 @@ room_temp = 10.0 #Initial value (could be anything....)
 
 #-----------------------ADAFRUIT-IO CALLBACKS----------------------------
 
+def payload_seperator(payload):
+    payload_d = {'num_sections': 0}
+    num_sec = payload.count(',') + 1
+    payload_d['num_sections'] = num_sec
+    if num_sec == 1:
+        payload_d['sec1'] = payload[:]
+    elif num_sec in [2, 3, 4]:
+        comma1 = payload.index(',')
+        payload.remove(',')
+        payload_d['sec1'] = payload[0:comma1]
+        if num_sec in [3, 4]:
+            comma2 = payload.index(',')
+            payload.remove(',')
+            payload_d['sec2'] = payload[comma1:comma2]
+            if num_sec == 4:
+                comma3 = payload.index(',')
+                payload.remove(',')
+                payload_d['sec3'] = payload[comma2:comma3]
+                payload_d['sec4'] = payload[comma3:]
+            else:
+                payload_d['sec3'] = payload[comma2:]
+        else:
+            payload['sec2'] = payload[comma1:]
+    else:
+        print('num_sec is out of range. Must be between 1,4')
+    return payload_d
+
+def outlet_manager(payload_d):
+    addr = payload_d['sec2']
+    if addr in ('ALL', 'All', 'all', '*', 'a', ':', '1234', 1234):
+        outlet_addr = 'all'
+    elif addr in (1, 2, 3, 4, '1', '2', '3', '4'):
+        outlet_addr = int(addr)
+    elif addr in outlet_names:
+        outlet_addr = addr
+    else:
+        outlet_addr = 'all'
+        print('outlet address outside of range (1/2/3/4/*), using default-->(all)')
+    if (payload_d['num_sec'] in [3,4]):
+        func = payload_d['sec3']
+        if func in ('ON', 'On', 'on', 1, '1', 'HIGH', 'high', 'True', True):
+            relays.on(outlet_addr)
+        elif func in ('OFF', 'Off', 'off', 0, '0', 'LOW', 'low', 'False', 'False'):
+            relays.off(outlet_addr)
+        elif func in ('FLIP', 'Flip', 'flip', -1, '-1', 'opposite', 'switch'):
+            relays.flip(outlet_addr)
+    else:
+        relays.flip(outlet_addr)
+
 def connected(client):
     print("Connected to Adafruit IO!  Listening for {0} changes".format(SUB_FEEDS['ifttt']))
     client.subscribe(SUB_FEEDS['ifttt'])
@@ -48,26 +97,12 @@ def disconnected(client):
     sys.exit(1)
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
-    print('payload[0:6] - {}'.format(payload[0:6]))
-    if payload[0:6] in ('Outlet', 'outlet'):
-        print('payload[-1] - {}, payload[-3:] - {}, payload[-4:] - {}'.format(payload[-1], payload[-3:], payload[-4:]))
-        if (payload[-1] in ('1', '2', '3', '4')):
-            if payload[-4:] == '1234':
-                outlet_num = 'all'
-            elif len(payload) == 7:
-                outlet_num = int(payload[6])
-            print('outlet_num: {}'.format(outlet_num))
-            relays.flip(outlet_num)
-        elif payload[-3:] in ('-ON', '-on', '-On'):
-            outlet_num = int(payload[6]) if (len(payload) == 10) else 'all'
-            print('outlet_num: {}'.format(outlet_num))
-            relays.on(outlet_num)
-        elif payload[-4:] in ('-OFF', '-off', '-Off'):
-            outlet_num = int(payload[6]) if (len(payload) == 11) else 'all'
-            print('outlet_num: {}'.format(outlet_num))
-            relays.off(outlet_num)
-    info = relays.receive_info_states()
-    print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
+    payload_d = payload_seperator(payload)
+    num_sec = payload_d['num_sec']
+    if payload_d['sec1'] in ('Outlet', 'outlet', 'Outlets', 'outlets', 'Out', 'out', 'O') and (num_sec > 1):
+        outlet_manager(payload_d)
+        info = relays.receive_info_states()
+        print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
 
 #--------------------------------MAIN CODE-------------------------------
 
