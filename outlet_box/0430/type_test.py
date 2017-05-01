@@ -29,12 +29,12 @@ def type_test(variable, options='none'):
         var_len = 1 if (ret in ('int', 'str-int')) else len(variable)
         return (ret, var_len)
     elif options == 'value':
-        if ret = 'str-int':
+        if ret == 'str-int':
             return (ret, int(variable))
         else:
             return (ret, variable)
     elif options == 'str-num-split':
-        if ret = 'str-int':
+        if ret == 'str-int':
             str_ints = []
             for i in range(len(variable)):
                 str_ints.append(int(variable[i]))
