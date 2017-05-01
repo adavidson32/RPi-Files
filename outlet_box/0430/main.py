@@ -84,15 +84,17 @@ client.connect()
 
 print('Number of DS18B20 sensors detected: {}'.format(var.num_ds))
 print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
-while True:
-   #sensor_values = (ds.temp(), bmp.pressure(), bmp.altitude('ft'), bh.light('lux'), pir.motion(t_last_motion))
-   client.loop()
-   if (time.time() - var.last) >= var.sample_rate:
-       var.room_temp = ds.temp()
-       #print('Publishing {0:.2f}F to RoomTemp feed.'.format(var.room_temp))
-       client.publish(PUB_FEEDS['temp'], var.room_temp)
-       var.last = time.time()
-
+try:
+    while True:
+       #sensor_values = (ds.temp(), bmp.pressure(), bmp.altitude('ft'), bh.light('lux'), pir.motion(t_last_motion))
+       client.loop()
+       if (time.time() - var.last) >= var.sample_rate:
+           var.room_temp = ds.temp()
+           #print('Publishing {0:.2f}F to RoomTemp feed.'.format(var.room_temp))
+           client.publish(PUB_FEEDS['temp'], var.room_temp)
+           var.last = time.time()
+except KeyboardInterrupt:
+    relays.cleanup()
 
 
 #------------------------------------------------------------------------
