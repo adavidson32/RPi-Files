@@ -60,7 +60,7 @@ def payload_seperator(payload):
                 payload_d['sec3'], payload_d['sec4'] = payload_sec3[0:i_comma3], payload_sec3[i_sec4:]
                 print("sec1('{}') sec2('{}') sec3('{}') sec4('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_d['sec3'], payload_d['sec4']))
             else:
-                payload_d['sec3'] = payload_rem[comma2:]
+                payload_d['sec3'] = payload_sec2[comma2:]
                 print("3sec:  1('{}')   2('{}')   3('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_d['sec3']))
         else:
             payload_d['sec2'] = payload[comma1:]
