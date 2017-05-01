@@ -69,7 +69,6 @@ class four_relays:
         print('Value  -->>  |type: {}| && |len: {}| && |value_assignements: {}|'.format(type_values, len_values, value_assignments))
 
         type_which, len_which = type_test(which, options='len')
-        print('Which  -->>  |type: {}| && |len: {}|'.format(type_which, len_which))
         if (len_values != len_which) and (len_values != 1):
             print('Issue likely detected: (len_values != 1) and (len_values != len_which)')
         if type_which in ('tuple', 'list'):
@@ -78,7 +77,7 @@ class four_relays:
             elif len_which == 1:
                 w = self.w_parse(which)
                 if w == -1:                     # (w == -1) if (which_outlets == 'all')
-                    which_outlets[:] = 1
+                    which_outlets = (1, 1, 1, 1)
                 else:
                     which_outlets[w-1] = 1      # (w != -1) if (which_outlets in [1, 2, 3, 4])
             else:
@@ -88,10 +87,10 @@ class four_relays:
             len_which = 1
             w = self.w_parse(which)
             if w == -1:                     # (w == -1) if (which_outlets == 'all')
-                which_outlets[:] = 1
+                which_outlets = (1, 1, 1, 1)
             else:
                 which_outlets[w-1] = 1      # (w != -1) if (which_outlets in [1, 2, 3, 4])
-
+        print('Which  -->>  |type: {}| && |len: {}| && |which_outlets: {}|'.format(type_which, len_which, which_outlets))
         return which_outlets, value_assignments
 
     def v_parse(self, value):
