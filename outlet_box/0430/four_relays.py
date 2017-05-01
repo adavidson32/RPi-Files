@@ -140,7 +140,7 @@ class four_relays:
                     self.Out[i].set(values[i])
                     self.states[i] = self.Out[i].info('state')
                 print('Outlet #{} changed to ({})'.format((i+1), self.states[i]))
-                self.t_change[i] = self.Out[i].info('time')
+                self.times[i] = self.Out[i].info('time')
 
     def set(self, outlets, values):
         print('starting set')
