@@ -49,41 +49,47 @@ class four_relays:
 
     def calc(self, which, values=-1):
         which_outlets = [0, 0, 0, 0]
-        value_assignments = []
+        value_assignments = [-1, -1, -1, -1]
 
-        type_values, other_values = type_test(values)
-        if type_values in ('str-int', 'int'):
+        type_values, len_values = type_test(values, options='len')
+        print('type: {}, len: {}'.format(type_values, len_values))
+        if type_values in ('tuple', 'list'):
+            if len_values not in (1, 2, 3, 4):
+                print('too many values entered (enter 4 or less via list/tuple)')
+            elif len_values == 1:
+                v = self.v_parse(values)
+                value_assignements = [v, v, v, v]
+            else:
+                for i in range(len_values):
+                    value_assignments[i] = self.v_parse(values[i])
+        elif type_values in ('int', 'str-int', 'str'):
             len_values = 1
-        else:
-            len_values = other_values
+            v = self.v_parse(values)
+            value_assignements = [v, v, v, v]
 
-        type_which, other_which = type_test(which)
-        if type_which in ('str-int', 'int'):
-            len_which = 1
-        elif type_which == 'int':
-            len_which = 1
-
+        type_which, len_which = type_test(which, options='len')
+        print('type: {}, len: {}'.format(type_which, len_which))
         if (len_values != len_which) and (len_values != 1):
-            print('issue likely detected due to length of value/which inputs')
-        elif (len_which > 4 or len_values > 4):
-            return 'error: which or values is too large (>4)'
-
-        if len_which == 1:
+            print('Issue likely detected: (len_values != 1) and (len_values != len_which)')
+        if type_which in ('tuple', 'list'):
+            if len_which not in (1, 2, 3, 4):
+                print('too many outlet addresses entered (enter 4 or less via list/tuple)')
+            elif len_which == 1:
+                w = self.w_parse(which)
+                if w == -1:                     # (w == -1) if (which_outlets == 'all')
+                    which_outlets[:] = 1
+                else:
+                    which_outlets[w-1] = 1      # (w != -1) if (which_outlets in [1, 2, 3, 4])
+            else:
+                for i in range(len_which):
+                    which_outlets[self.w_parse(which[i])-1] = 1
+        elif type_which in ('str-int', 'int', 'str'):
+            len_which = 1
             w = self.w_parse(which)
             if w == -1:                     # (w == -1) if (which_outlets == 'all')
                 which_outlets[:] = 1
             else:
                 which_outlets[w-1] = 1      # (w != -1) if (which_outlets in [1, 2, 3, 4])
-        elif len_which in [2, 3, 4]:
-            for i in range(len_which):
-                which_outlets[self.w_parse(which[i])-1] = 1
-
-        if len_values == 1:
-            v = self.v_parse(values)
-            value_assignements = [v, v, v, v]
-        elif len_values in [2, 3, 4]:
-            for i in range(len_values):
-                value_assignments[i] = self.v_parse(values[i])
 
         return which_outlets, value_assignments
 
@@ -94,9 +100,12 @@ class four_relays:
             return 1
         elif value in ('off', 'OFF', 'Off', 0, [0], (0,), '0'):
             return 0
+        else:
+            print("Assigned Value ({}) is not in ('ON', 'OFF', 'flip', 1, 0, -1, etc.)".format(value))
+            return 'error'
 
     def w_parse(self, which):
-        if which in ('all', '1234', 'O1234', 'ALL', 'All', [1,1,1,1], 'Outlet1234'):
+        if which in ('all', '1234', 'O1234', 'ALL', 'All', 1234, 'Outlet1234'):
             return -1
         elif which in ('Outlet1', 'O1', 'o1', 1, 0b1000):
             return 1
@@ -108,6 +117,9 @@ class four_relays:
             return 4
         elif which in self.names:
             return (self.names.index(which) + 1)
+        else:
+            print("Assigned address ({}) is not in ('Outlet1', 'Outlet2', 'all', 'O1', 0b1011, etc.)".format(which))
+            return 'error'
 
     #------------------------------------------------------------------------
 
