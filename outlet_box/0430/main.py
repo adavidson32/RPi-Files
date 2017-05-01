@@ -98,6 +98,7 @@ def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     payload_d = payload_seperator(payload)
     num_sec = payload_d['num_sections']
+    print(payload_d.items())
     if payload_d['sec1'] in ('Outlet', 'outlet', 'Outlets', 'outlets', 'Out', 'out', 'O') and (num_sec > 1):
         outlet_manager(payload_d)
         info = relays.retrieve_info_states()
