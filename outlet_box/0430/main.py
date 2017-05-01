@@ -20,7 +20,8 @@ def payload_seperator(payload, seperator=','):
     sect_range = range(len(sections))
     sect_names = ['sect{}'.format(i+1) for i in sect_range]
     sect_values = [sections[i] for i in sect_range]
-    payload_dict = dict(((sect_names[i], sect_values[i]) for i in sect_range) + ('n_sect', n_sect))
+    payload_dict = dict(((sect_names[i], sect_values[i]) for i in sect_range))
+    payload_dict['n_sect'] = n_sect
     for i in sect_range:
         print("name->('{}'), value->('{}'), payload_dict[name]->()". format(sect_names[i], sect_values[i], payload_dict[sect_names[i]]))
     if n_sect > 4:
