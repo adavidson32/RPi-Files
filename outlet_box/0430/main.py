@@ -47,7 +47,7 @@ def disconnected(client):
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     print('payload[0:6] - {}'.format(payload[0:6]))
-    if (payload[0:6] in ('Outlet', 'outlet'):
+    if payload[0:6] in ('Outlet', 'outlet'):
         print('payload[-1] - {}, payload[-3:] - {}, payload[-4:] - {}'.format(payload[-1], payload[-3:], payload[-4:]))
         if (payload[-1] in ('1', '2', '3', '4')):
             if payload[-4:] == '1234':
