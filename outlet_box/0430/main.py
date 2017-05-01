@@ -60,8 +60,10 @@ def payload_seperator(payload):
                 payload_d['sec4'] = payload[comma3:]
             else:
                 payload_d['sec3'] = payload[comma2:]
+                print("3sec:  1('{}')   2('{}')   3('{}')".format(payload_d['sec1'], payload_d['sec2'], payload_d['sec3']))
         else:
             payload_d['sec2'] = payload[comma1:]
+            print("2sec:  1('{}')   2('{}')".format(payload_d['sec1'], payload_d['sec2']))
     else:
         print('num_sec is out of range. Must be between 1,4')
     return payload_d
