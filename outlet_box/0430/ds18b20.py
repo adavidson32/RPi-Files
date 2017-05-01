@@ -28,13 +28,13 @@ class DS18B20:
             self._device_file.append(device_folder[i] + '/w1_slave')
             i += 1
 
-#-----------------------DEVICE COUNT------------------------------------
+    #-----------------------DEVICE COUNT------------------------------------
 
     def num_ds(self):
         # call this to see how many sensors have been detected
         return self._num_devices
 
-#------------------INTERNAL TEMP CALC - DONT USE------------------------
+    #------------------INTERNAL TEMP CALC - DONT USE------------------------
 
     def _read_temp(self,index):
         # Issue one read to one sensor
@@ -44,7 +44,7 @@ class DS18B20:
         f.close()
         return lines
 
-#------------------------SINGLE TEMP CALC-------------------------------
+    #------------------------SINGLE TEMP CALC-------------------------------
 
     def temp(self, index=0, units=self.units):
         # call this to get the temperature in degrees C
@@ -70,7 +70,7 @@ class DS18B20:
             # error
             return 999
 
-#------------------------ALL TEMP CALC-----------------------------------
+    #------------------------ALL TEMP CALC-----------------------------------
 
     def temps(self):
         temps = ('',)
