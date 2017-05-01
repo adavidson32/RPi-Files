@@ -58,7 +58,7 @@ class four_relays:
                 print('too many values entered (enter 4 or less via list/tuple)')
             elif len_values == 1:
                 v = self.v_parse(values)
-                value_assignements = [v, v, v, v]
+                value_assignments = [v, v, v, v]
             else:
                 for i in range(len_values):
                     value_assignments[i] = self.v_parse(values[i])
@@ -66,7 +66,7 @@ class four_relays:
             len_values = 1
             v = self.v_parse(values)
             print(v)
-            value_assignements = [v, v, v, v]
+            value_assignments = [v, v, v, v]
 
         type_which, len_which = type_test(which, options='len')
         print('value: {}, type: {}, len: {}'.format(which, type_which, len_which))
