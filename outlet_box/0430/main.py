@@ -47,18 +47,21 @@ def disconnected(client):
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     print('payload[0:6] - {}'.format(payload[0:6]))
-    if (payload[0:6] == 'Outlet'):
+    if (payload[0:6] in ('Outlet', 'outlet'):
         print('payload[-1] - {}, payload[-3:] - {}, payload[-4:] - {}'.format(payload[-1], payload[-3:], payload[-4:]))
         if (payload[-1] in ('1', '2', '3', '4')):
-            outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            if payload[-4:] == '1234':
+                outlet_num = 'all'
+            elif len(payload) == 7):
+                outlet_num = int(payload[6])
             print('outlet_num: {}'.format(outlet_num))
             relays.flip(outlet_num)
         elif payload[-3:] in ('-ON', '-on', '-On'):
-            outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            outlet_num = int(payload[6]) if (len(payload) == 10) else 'all'
             print('outlet_num: {}'.format(outlet_num))
             relays.on(outlet_num)
         elif payload[-4:] in ('-OFF', '-off', '-Off'):
-            outlet_num = int(payload[6]) if (len(payload) == 7) else 'all'
+            outlet_num = int(payload[6]) if (len(payload) == 11) else 'all'
             print('outlet_num: {}'.format(outlet_num))
             relays.off(outlet_num)
     info = relays.receive_info_states()
