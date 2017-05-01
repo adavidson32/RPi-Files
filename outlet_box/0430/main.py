@@ -77,7 +77,7 @@ def outlet_manager(payload_d):
     else:
         outlet_addr = 'all'
         print('outlet address outside of range (1/2/3/4/*), using default-->(all)')
-    if (payload_d['num_sec'] in [3,4]):
+    if (payload_d['num_sections'] in [3,4]):
         func = payload_d['sec3']
         if func in ('ON', 'On', 'on', 1, '1', 'HIGH', 'high', 'True', True):
             relays.on(outlet_addr)
@@ -97,7 +97,7 @@ def disconnected(client):
 def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
     payload_d = payload_seperator(payload)
-    num_sec = payload_d['num_sec']
+    num_sec = payload_d['num_sections']
     if payload_d['sec1'] in ('Outlet', 'outlet', 'Outlets', 'outlets', 'Out', 'out', 'O') and (num_sec > 1):
         outlet_manager(payload_d)
         info = relays.receive_info_states()
