@@ -10,7 +10,7 @@
 #-----------------------INITIALIZE+SETUP DS18B20-------------------------
 
 from single_relay import relay
-from type_test import type_test
+from type_test import type_test, is_int, is_str, is_strint
 
 class four_relays:
     def __init__(self, pins, names, types):
@@ -48,12 +48,12 @@ class four_relays:
     #--------------------------Parsing Functions-----------------------------
 
     def calc(self, which, values=-1):
-        type_which = type(which)
-        len_which = 1 if type_test(which) == 'int' else 
-        if type_test(which) == 'str':
+        type_which, num_which = type_test(which)
+        if type_which == 'int':
             len_which = 1
+            outlet_num = num_which
         else:
-            len_which = len(which)
+            len_which = num_which
         type_values, len_values = type(values), len(values)
         which_outlets = [0, 0, 0, 0]
         value_assignments = []
