@@ -23,7 +23,7 @@ def payload_seperator(payload, seperator=','):
     payload_dict = dict(((sect_names[i], sect_values[i]) for i in sect_range))
     payload_dict['n_sect'] = n_sect
     for i in sect_range:
-        print("name->('{}'), value->('{}'), payload_dict[name]->()". format(sect_names[i], sect_values[i], payload_dict[sect_names[i]]))
+        print("name->('{}'), value->('{}'), payload_dict[name]->('{}')". format(sect_names[i], sect_values[i], payload_dict[sect_names[i]]))
     if n_sect > 4:
         print('n_sect is out of range (currenly: {}). Must be between 1,4'.format(n_sect))
     return payload_dict

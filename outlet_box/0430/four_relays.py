@@ -53,8 +53,11 @@ class four_relays:
         value_assignments = self.retrieve_info_states()
 
         type_values, len_values = type_test(values, options='len')
-        print('Value  -->>  |type: {}| && |len: {}|'.format(type_values, len_values))
-        if type_values in ('tuple', 'list'):
+        if type_values in ('int', 'str-int', 'str'):
+            len_values = 1
+            v = self.v_parse(values)
+            value_assignments = (v, v, v, v)
+        elif type_values in ('tuple', 'list'):
             if len_values not in (1, 2, 3, 4):
                 print('too many values entered (enter 4 or less via list/tuple)')
             elif len_values == 1:
@@ -63,10 +66,7 @@ class four_relays:
             else:
                 for i in range(len_values):
                     value_assignments[i] = self.v_parse(values[i])
-        elif type_values in ('int', 'str-int', 'str'):
-            len_values = 1
-            v = self.v_parse(values)
-            value_assignments = (v, v, v, v)
+        print('Value  -->>  |type: {}| && |len: {}| && |value_assignements: {}|'.format(type_values, len_values, value_assignments))
 
         type_which, len_which = type_test(which, options='len')
         print('Which  -->>  |type: {}| && |len: {}|'.format(type_which, len_which))
