@@ -48,7 +48,7 @@ class four_relays:
     #--------------------------Parsing Functions-----------------------------
 
     def calc(self, which, values=-1):
-        print('starting calc with which=({}), values=({})'.format(which, values))
+        #print('starting calc with which=({}), values=({})'.format(which, values))
         which_outlets = [0, 0, 0, 0]
         value_assignments = self.retrieve_info_states()
 
@@ -56,7 +56,7 @@ class four_relays:
         if type_values in ('int', 'str-int', 'str'):
             len_values = 1
             v = self.v_parse(values)
-            print('v = ', v)
+            #print('v = ', v)
             value_assignments = (v, v, v, v)
         elif type_values in ('tuple', 'list'):
             if len_values not in (1, 2, 3, 4):
@@ -67,7 +67,7 @@ class four_relays:
             else:
                 for i in range(len_values):
                     value_assignments[i] = self.v_parse(values[i])
-        print('Value  -->>  |type: {}| && |len: {}| && |value_assignements: {}|'.format(type_values, len_values, value_assignments))
+        #print('Value  -->>  |type: {}| && |len: {}| && |value_assignements: {}|'.format(type_values, len_values, value_assignments))
 
         type_which, len_which = type_test(which, options='len')
         if (len_values != len_which) and (len_values != 1):
@@ -87,12 +87,12 @@ class four_relays:
         elif type_which in ('str-int', 'int', 'str'):
             len_which = 1
             w = self.w_parse(which)
-            print('w = ', w)
+            #print('w = ', w)
             if w == -1:                     # (w == -1) if (which_outlets == 'all')
                 which_outlets = (1, 1, 1, 1)
             else:
                 which_outlets[w-1] = 1      # (w != -1) if (which_outlets in [1, 2, 3, 4])
-        print('Which  -->>  |type: {}| && |len: {}| && |which_outlets: {}|'.format(type_which, len_which, which_outlets))
+        #print('Which  -->>  |type: {}| && |len: {}| && |which_outlets: {}|'.format(type_which, len_which, which_outlets))
         return which_outlets, value_assignments
 
     def v_parse(self, value):
@@ -128,11 +128,11 @@ class four_relays:
     #------------------------------------------------------------------------
 
     def update_states(self, outlets, values):
-        print('starting update_states')
+        #print('starting update_states')
         #TD: After testing, remove or comment out all print statements
         #^^^ Maybe just leave 1x statement with new states....
-        print('Updating outlets to: {}'.format(outlets))
-        print('Updating values to: {}'.format(values))
+        #print('Updating outlets to: {}'.format(outlets))
+        #print('Updating values to: {}'.format(values))
         for i in range(4):
             if outlets[i] == 1:
                 if values[i] == -1:
@@ -145,22 +145,22 @@ class four_relays:
         print('new states: ', self.retrieve_info_states())
 
     def set(self, outlets, values):
-        print('starting set({}, {})'.format(outlets, values))
+        #print('starting set({}, {})'.format(outlets, values))
         outlets_org, values_org = self.calc(outlets, values)
         self.update_states(outlets_org, values_org)
         #(PPPP) print("self.Out[i].info('states') : {}, {}, {}, {}".format(self.retrieve_info_states()))
         #^^^^ Above function (set) is called for every on/off/flip so good place to put print statements...
 
     def on(self, outlets):
-        print('starting on({})'.format(outlets))
+        #print('starting on({})'.format(outlets))
         self.set(outlets, 'on')
 
     def off(self, outlets):
-        print('starting off({})'.format(outlets))
+        #print('starting off({})'.format(outlets))
         self.set(outlets, 'off')
 
     def flip(self, outlets):
-        print('starting flip({})'.format(outlets))
+        #print('starting flip({})'.format(outlets))
         self.set(outlets, 'flip')
 
     def close(self):

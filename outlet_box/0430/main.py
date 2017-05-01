@@ -22,8 +22,8 @@ def payload_seperator(payload, seperator=','):
     sect_values = [sections[i] for i in sect_range]
     payload_dict = dict(((sect_names[i], sect_values[i]) for i in sect_range))
     payload_dict['n_sect'] = n_sect
-    for i in sect_range:
-        print("name->('{}'), value->('{}'), payload_dict[name]->('{}')". format(sect_names[i], sect_values[i], payload_dict[sect_names[i]]))
+    #for i in sect_range:
+    #    print("name->('{}'), value->('{}'), payload_dict[name]->('{}')". format(sect_names[i], sect_values[i], payload_dict[sect_names[i]]))
     if n_sect > 4:
         print('n_sect is out of range (currenly: {}). Must be between 1,4'.format(n_sect))
     return payload_dict
@@ -57,13 +57,13 @@ def disconnected(client):
     print('Disconnected from Adafruit IO!')
     sys.exit(1)
 def message(client, feed_id, payload):
-    print('Feed {0} received new value: {1}'.format(feed_id, payload))
+    #print('Feed {0} received new value: {1}'.format(feed_id, payload))
     payload_dict = payload_seperator(payload, seperator=',')
     n_sect = payload_dict['n_sect']
     if payload_dict['sect1'] in ('Outlet', 'outlet', 'Outlets', 'outlets', 'Out', 'out', 'O', 'o') and (n_sect > 1):
         outlet_manager(payload_dict)
         info = relays.retrieve_info_states()
-        print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
+        #print('O1: {}, O2: {}, O3: {}, O4: {}'.format(info[0], info[1], info[2], info[3]))
 
 
 
