@@ -61,7 +61,7 @@ def payload_seperator(payload):
             else:
                 payload_d['sec3'] = payload[comma2:]
         else:
-            payload['sec2'] = payload[comma1:]
+            payload_d['sec2'] = payload[comma1:]
     else:
         print('num_sec is out of range. Must be between 1,4')
     return payload_d
