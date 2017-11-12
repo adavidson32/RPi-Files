@@ -44,7 +44,7 @@ def clear_lcd():
 def lcd_print(distance, which_light, temp):
   clear_lcd()
   str1 = "D={0:2.2f}m->{1}".format(distance, which_light)
-  str2 = "Temp. = {0:2.2f} *F"
+  str2 = "Temp. = {0:2.2f} *F".format(temp)
   lcd.lcd_display_string(str1, 1)
   lcd.lcd_display_string(str2, 2)
 
