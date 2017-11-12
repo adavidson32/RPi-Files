@@ -45,8 +45,8 @@ def lcd_print(distance, which_light, temp)
   clear_lcd()
   str1 = "D={0:2.2f}m->{1}".format(distance, which_light)
   str2 = "Temp. = {0:2.2f} *F"
-  lcd.lcd_display(str1, 1)
-  lcd.lcd_display(str2, 2)
+  lcd.lcd_display_string(str1, 1)
+  lcd.lcd_display_string(str2, 2)
 
 def which_color(distance):
   if distance <= red_distance:
