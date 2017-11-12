@@ -80,5 +80,5 @@ while True:
   dist = read_sonar()
   which_light = which_color(dist)
   room_temp = read_temp()
-  lcd_print(dist, which_light, temp)
+  lcd_print(dist, which_light, room_temp)
   time.sleep(sample_rate)
