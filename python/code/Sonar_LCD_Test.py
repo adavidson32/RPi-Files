@@ -50,24 +50,24 @@ def lcd_print(distance, which_light, temp):
 
 def which_color(distance):
   if distance <= red_distance:
-    GPIO.output(Green_Light_Pin, GPIO.HIGH)
-    GPIO.output(Yellow_Light_Pin, GPIO.HIGH)
-    GPIO.output(Red_Light_Pin, GPIO.LOW)
+    GPIO.output(Green_Light, GPIO.HIGH)
+    GPIO.output(Yellow_Light, GPIO.HIGH)
+    GPIO.output(Red_Light, GPIO.LOW)
     return "RED   "
   elif distance <= yellow_distance:
-    GPIO.output(Green_Light_Pin, GPIO.HIGH)
-    GPIO.output(Yellow_Light_Pin, GPIO.LOW)
-    GPIO.output(Red_Light_Pin, GPIO.HIGH)
+    GPIO.output(Green_Light, GPIO.HIGH)
+    GPIO.output(Yellow_Light, GPIO.LOW)
+    GPIO.output(Red_Light, GPIO.HIGH)
     return "YELLOW"
   elif distance <= green_distance:
-    GPIO.output(Green_Light_Pin, GPIO.LOW)
-    GPIO.output(Yellow_Light_Pin, GPIO.HIGH)
-    GPIO.output(Red_Light_Pin, GPIO.HIGH)
+    GPIO.output(Green_Light, GPIO.LOW)
+    GPIO.output(Yellow_Light, GPIO.HIGH)
+    GPIO.output(Red_Light, GPIO.HIGH)
     return "GREEN "
   else:
-    GPIO.output(Green_Light_Pin, GPIO.HIGH)
-    GPIO.output(Yellow_Light_Pin, GPIO.HIGH)
-    GPIO.output(Red_Light_Pin, GPIO.HIGH)
+    GPIO.output(Green_Light, GPIO.HIGH)
+    GPIO.output(Yellow_Light, GPIO.HIGH)
+    GPIO.output(Red_Light, GPIO.HIGH)
     return "NONE  "
     
 def read_sonar():
