@@ -71,7 +71,7 @@ def which_color(distance):
     return "NONE  "
     
 def read_sonar():
-  return 4.33
+  return 4.319043
     
 lcd = lcddriver.lcd()
 clear_lcd()
