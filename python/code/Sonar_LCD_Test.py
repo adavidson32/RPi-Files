@@ -6,6 +6,8 @@ LCD_NOBACKLIGHT = 0x00
 
 sample_rate = 0.5
 room_temp = 10.0
+current_distance = 3.95
+current_color = "NONE  "
 green_distance = 4
 yellow_distance = 1.5
 red_distance = 0.5
@@ -71,7 +73,7 @@ def which_color(distance):
     return "NONE  "
     
 def read_sonar():
-  return 4.319043
+  return current_distance
     
 lcd = lcddriver.lcd()
 clear_lcd()
